@@ -1,0 +1,9 @@
+    {% extends "base.html" %}
+    {% block title %} Home {% endblock %}
+    {% block basecontent %}
+        <div class ="mainContent">
+            {% for a in auctions %}
+                <p> {{ a.id }} {{ a.title }}  {{ a.startdate }} {{ a.product }} {{ a.status }} </p>
+            {% endfor %}
+        </div>
+    {% endblock %}

@@ -1,0 +1,24 @@
+    {% extends "base.html" %}
+    {% block title %} Register {% endblock %}
+    {% block basecontent %}
+        <div class ="mainContent">
+                <h4> Hello Auctionary! </h4>
+           {% if success %}
+                 <h3> Thank you for registration!</h3>
+                <a href="index.html"> Home page</a>
+           {% else %}
+                   <h3> Register here</h3>
+             <form id="reg_form" action="/register/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="username">Username :</label>
+                    <input type="text" name="username" value="" id="uname">
+                <label for="username">Password :</label>
+                    <input type="text" name="username" value="" id="pword">
+                <label for="username"> Email :</label>
+                    <input type="text" name="email" value="" id="email">
+                <input type="submit" value="Signup" name="signup">
+                <input type="submit" value="Cancel" name="cancel">
+             </form>
+           {% endif %}
+        </div>
+    {% endblock %}

@@ -26,6 +26,8 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+# provide get_profile()
+AUTH_PROFILE_MODULE = 'yaas.Account'
 
 # Application definition
 
@@ -36,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'YAAS',
+    'yaas',
+
 )
 
 MIDDLEWARE_CLASSES = (
