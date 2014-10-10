@@ -1,0 +1,31 @@
+  {% extends "base_yaas.html" %}
+    {% block title %} Logged in {% endblock %}
+    {% block basecontent %}
+       <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>ID</th>
+                  <th>Initial Price</th>
+                  <th>Highest Price</th>
+                  <th>Inserted On</th>
+                  <th>Production Category</th>
+                    <th>Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for p in products %}
+                    <tr>
+                      <td>{{ p.id }}</td>
+                      <td>{{ p.initial_price }}</td>
+                      <td> {{ p.highest_price }}</td>
+                      <td> {{ p.timestamp }}</td>
+                      <td>{{ p.product_category }}</td>
+                    <td>{{ p.user }}</td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
+    {% endblock %}

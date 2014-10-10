@@ -8,7 +8,7 @@
                     <th>ID</th>
                   <th>Product</th>
                   <th>Updated On</th>
-                  <th>Auction Ends on</th>
+                  <th>Auction Ends</th>
                   <th>Highest Bid</th>
                   <th>Auction Owner</th>
                 </tr>
@@ -20,7 +20,7 @@
                       <td>{{ a.product }}</td>
                       <td> {{ a.updated_time }}</td>
                       <td> {{ a.end_time }}</td>
-                      <td>{{ a.highest_bid_price }}</td>
+                      <td>{{ a.product.highest_bid_price }}</td>
                       <td>{{ a.user }}</td>
                     </tr>
                 {% endfor %}

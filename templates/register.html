@@ -2,17 +2,17 @@
     {% block title %} Register {% endblock %}
     {% block basecontent_register %}
 
-        <div class ="mainContent">
+        <div class ="login">
                 <h4> Hello Auctionary! </h4>
            {% if success %}
                  <h3> Thank you for registration!</h3>
                 <a href="index.html"> Home page</a>
            {% else %}
-               <form id="reg_form" action="/register/" method="post" enctype="multipart/form-data">        {% csrf_token %}
-                 {{ form.as_p }}
-                 <input type="submit" value="signup">
-               </form>
+               <form class="subject" action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input type="submit" name="signup" value="Signup">
+                </form>
            {% endif %}
         </div>
-
     {% endblock %}

@@ -4,7 +4,7 @@ from yaas.models import Auction, AuctionStatus, Product, ProductCategory
 # Register your models here.
 
 class AuctionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'product', 'auction_category','user',
+    list_display = ('id', 'title', 'product', 'auction_category',
                     'starting_price', 'highest_bid_price', 'updated_time', 'end_time', 'status', )
     search_fields = ['title']
 
@@ -29,7 +29,7 @@ class AuctionStatusAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'timestamp','initial_price', 'highest_price', 'description', 'product_category')
+    list_display = ('id', 'name','user', 'timestamp','initial_price', 'highest_price', 'description', 'product_category')
     search_fields = ['name']
 
     class Meta:

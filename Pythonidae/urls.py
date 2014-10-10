@@ -14,6 +14,7 @@ urlpatterns = patterns('',
     url(r'^index/$', views.display_auctions, name='index'),
     url(r'^login/$', views.user_login, name='login'),
     url(r'^register/$', views.register, name='register'),
+    url(r'^loggedin/$', views.display_product, name='loggedin'),
 
 
     url(r'^admin/', include(admin.site.urls)),
