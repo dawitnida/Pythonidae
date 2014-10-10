@@ -1,8 +1,7 @@
-    {% extends "base.html" %}
+    {% extends "base_yaas.html" %}
     {% block title %} Login {% endblock %}
-    {% block basecontent %}
+    {% block basecontent_login %}
         <div class ="mainContent">
-                <h4> Hello Auctionary! </h4>
          <form action="" method="post">
             {% csrf_token %}
             <label for="username">Username :</label>
@@ -13,6 +12,5 @@
              <input type="submit" value="Cancel" name="cancel">
             <input type="hidden" name="next" value="loginpage">
          </form>
-
         </div>
     {% endblock %}

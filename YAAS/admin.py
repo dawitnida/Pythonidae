@@ -1,17 +1,21 @@
 from django.contrib import admin
-from yaas.models import Auction, AuctionStatus, Product, Category
+from yaas.models import Auction, AuctionStatus, Product, ProductCategory
 
 # Register your models here.
 
 class AuctionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'product', 'auction_price', 'start_date', 'end_date', 'status', )
+    list_display = ('id', 'title', 'product', 'auction_category','user',
+                    'starting_price', 'highest_bid_price', 'updated_time', 'end_time', 'status', )
     search_fields = ['title']
 
-    def owner(self, instance):
-        return instance.user.username
+    def starting_price(self, instance):
+        return instance.product.initial_price
 
-    def auction_price(self, instance):
-        return instance.product.price
+    def highest_bid_price(self, instance):
+        return instance.product.highest_price
+
+    def auction_category(self, instance):
+        return instance.product.product_category
 
     class Meta:
         model = Auction
@@ -25,23 +29,22 @@ class AuctionStatusAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'price', 'description', 'category')
-    search_fields = ['name', 'minimumPrice']
+    list_display = ('id', 'name', 'timestamp','initial_price', 'highest_price', 'description', 'product_category')
+    search_fields = ['name']
 
     class Meta:
         model = Product
 
-class CategoryAdmin(admin.ModelAdmin):
+class ProductCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
 
     class Meta:
-        model = Category
-
+        model = ProductCategory
 
 
 admin.site.register(Auction, AuctionAdmin)
 admin.site.register(AuctionStatus, AuctionStatusAdmin)
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Category, CategoryAdmin)
+admin.site.register(ProductCategory, ProductCategoryAdmin)
 
 

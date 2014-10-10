@@ -1,9 +1,31 @@
-    {% extends "base.html" %}
+    {% extends "base_yaas.html" %}
     {% block title %} Home {% endblock %}
     {% block basecontent %}
-        <div class ="mainContent">
-            {% for a in auctions %}
-                <p> {{ a.id }} {{ a.title }}  {{ a.startdate }} {{ a.product }} {{ a.status }} </p>
-            {% endfor %}
-        </div>
+         <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th>ID</th>
+                  <th>Product</th>
+                  <th>Updated On</th>
+                  <th>Auction Ends on</th>
+                  <th>Highest Bid</th>
+                  <th>Auction Owner</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for a in auctions %}
+                    <tr>
+                      <td>{{ a.id }}</td>
+                      <td>{{ a.product }}</td>
+                      <td> {{ a.updated_time }}</td>
+                      <td> {{ a.end_time }}</td>
+                      <td>{{ a.highest_bid_price }}</td>
+                      <td>{{ a.user }}</td>
+                    </tr>
+                {% endfor %}
+
+              </tbody>
+            </table>
+          </div>
     {% endblock %}
