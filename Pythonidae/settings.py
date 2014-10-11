@@ -26,8 +26,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# provide get_profile()
-AUTH_PROFILE_MODULE = 'yaas.Account'
 
 # Application definition
 
@@ -89,3 +87,5 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
+
+FIXTURES_DIRS = (os.path.join(BASE_DIR, '/fixtures/'))

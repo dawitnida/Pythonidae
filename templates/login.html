@@ -1,16 +1,14 @@
     {% extends "base_yaas.html" %}
     {% block title %} Login {% endblock %}
     {% block basecontent_login %}
-        <div class ="mainContent">
+        <div class ="login">
          <form action="" method="post">
             {% csrf_token %}
-            <label for="username">Username :</label>
-            <input type="text" name="username" value="" id="username"> <br>
-            <label for="password">Password :</label>
-            <input type="password" name="password" value="" id="password">  <br>
-            <input type="submit" value="Login" name="login">
-             <input type="submit" value="Cancel" name="cancel">
-            <input type="hidden" name="next" value="loginpage">
+            <label for="username"></label>
+            <input type="text" name="username" value="" placeholder="Username" id="username"> <br>
+            <label for="password"></label>
+            <input type="password" name="password" value="" placeholder="Password" id="password">  <br>
+              <p class="submit"><input type="submit" value="Login" name="login"> </p>
          </form>
         </div>
     {% endblock %}

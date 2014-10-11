@@ -1,0 +1,50 @@
+[
+    {
+        "model": "yaas.product",
+        "pk": 1,
+        "fields": {
+            "name": "Zara t-shirt",
+            "seller": 3,
+            "initial_price": 45.89,
+            "description": "Cool t-shirt",
+            "timestamp": "2014-10-11 22:49:54",
+            "product_category": 7
+        }
+    },
+    {
+        "model": "yaas.product",
+        "pk": 2,
+        "fields": {
+            "name": "50 Shades",
+            "seller": 12,
+            "initial_price": 86.69,
+            "description": "Amazing book",
+            "timestamp": "2016-10-11 22:49:54",
+            "product_category": 6
+        }
+    },
+    {
+        "model": "yaas.product",
+        "pk": 3,
+        "fields": {
+            "name": "Windows 10",
+            "seller": 5,
+            "initial_price": 323.8,
+            "description": "Must own it!",
+            "timestamp": "2015-10-30 03:00:54",
+            "product_category": 4
+        }
+    },
+    {
+        "model": "yaas.product",
+        "pk": 4,
+        "fields": {
+            "name": "Monaliza",
+            "seller": 6,
+            "initial_price": 6589,
+            "description": "Monalisa or Mona lisaa",
+            "timestamp": "2014-02-11 11:49:54",
+            "product_category": 1
+        }
+    }
+]

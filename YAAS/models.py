@@ -1,63 +1,83 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.conf import settings
-from django.db.models.signals import post_save
-
-"""
-class UserProfile(models.Model):
-    # Links Account to a User model instance
-    user = models.OneToOneField(User)
-
-    # Additional attribute to the User
-    # image = models.ImageField(upload_to='avatars', blank=True)  # requires PIL (Python Image Lib)
-    role = models.CharField(max_length=10)
-
-    def __unicode__(self):
-        return self.username
-"""
-#create user object to attach to the Account object! Magi
-# User.profile = property(lambda u: Account.objects.get_or_create(user=u)[0])
+from django.utils.encoding import smart_unicode
+from datetime import datetime
 
 
-
-class Category(models.Model):
+class ProductCategory(models.Model):
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
-        return self.name
+        return smart_unicode(self.name)
 
 
 class Product(models.Model):
     name = models.CharField(max_length=20)
-    price = models.DecimalField(max_digits=10, decimal_places = 2)
+    seller = models.ForeignKey(User, verbose_name="seller")
+    initial_price = models.DecimalField(max_digits=10, decimal_places = 2, verbose_name="starting bid" )
     description = models.TextField(max_length=140)
-    category = models.ForeignKey(Category)
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, default= datetime.now())
+    product_category = models.ForeignKey(ProductCategory, verbose_name="product category")
 
     def __unicode__(self):
-        return self.name
+        return smart_unicode(self.name)
+
+    @classmethod
+    def fetchOwnProducts(cls):
+        try:
+            queryset = cls.objects.all().order_by('-timestamp')
+            return queryset
+        except IndexError:
+            return None
 
 
 class AuctionStatus(models.Model):
     name = models.CharField(max_length=20)
 
     def __unicode__(self):
-        return self.name
+        return smart_unicode(self.name)
 
 
 class Auction(models.Model):
     title = models.CharField(max_length=20)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-   # user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    current_price = models.DecimalField(max_digits=10, decimal_places = 2,
+                                        null=True, blank=True, verbose_name="current bid" )
+    updated_time = models.DateTimeField(auto_now_add=False,
+                                        auto_now=True, default= datetime.now())
+    end_time = models.DateTimeField()
     product = models.ForeignKey(Product)
-    status = models.ForeignKey(AuctionStatus)
+    status = models.ForeignKey(AuctionStatus, verbose_name="auction status")
 
-    #TODO Add foreign keys
     def __unicode__(self):
-        return self.title
+        return smart_unicode(self.title)
 
 
+    @classmethod
+    def fetchLatestAuctions(cls):
+        try:
+            queryset = cls.objects.all().order_by('-end_time').reverse()[:10]
+            return queryset
+        except IndexError:
+            return None
 
+
+class Bidder(models.Model):
+    contender = models.ForeignKey(User, verbose_name="contender")
+    aucs = models.ManyToManyField(Auction, through='AuctionBidder')
+
+    def __unicode__(self):
+        return smart_unicode(self.contender)
+
+
+class AuctionBidder(models.Model):
+    contender = models.ForeignKey(Bidder)
+    aucs = models.ForeignKey(Auction)
+    bid_amount = models.DecimalField(max_digits=10, decimal_places = 2, verbose_name="bid amount" )
+    bid_time = models.DateTimeField(auto_now_add=False,
+                                        auto_now=True, default= datetime.now())
+
+    def __unicode__(self):
+        return smart_unicode(self.aucs)
 
 
 
