@@ -18,7 +18,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for a in auctions %}
+                {% for a in auctcategory %}
                     <tr>
                       <td>{{ a.id }}</td>
                       <td><a href="#">{{ a.product }}</a></td>
@@ -27,7 +27,7 @@
                       <td> {{ a.end_time }}</td>
                       <td>{{ a.product.initial_price }}</td>
                       <td>{{ a.current_price }}</td>
-                      <td><a href="/listauccat/{{ a.product.product_category.id }}">{{ a.product.product_category }}</a></td>
+                      <td><a href="#">{{ a.product.product_category }}</a></td>
                       <td>{{ a.product.seller }}</td>
                     </tr>
                 {% endfor %}

@@ -1,0 +1,53 @@
+ {% extends "base_yaas.html" %}
+    {% block title %} Auction Detail {% endblock %}
+
+    {% block basecontent %}
+       <h2 class="sub-header">Auction Detail!</h2>
+       <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+              <tbody>
+                 <tr>
+                    <th>ID</th>
+                    <td>{{ singleauction.id }}</td>
+                 </tr>
+                 <tr>
+                    <th>Product name</th>
+                    <td><a href="#">{{ singleauction.product }}</a></td>
+                 </tr>
+                 <tr>
+                    <th>Auction Title</th>
+                    <td>{{ singleauction.title }}</td>
+                 </tr>
+                 <tr>
+                    <th>Updated On</th>
+                    <td>{{ singleauction.updated_time }}</td>
+                 </tr>
+                 <tr>
+                    <th>Auction Ends</th>
+                    <td>{{ singleauction.end_time }}</td>
+                 </tr>
+                 <tr>
+                    <th>Initial Price</th>
+                    <td>{{ singleauction.product.initial_price }}</td>
+                 </tr>
+                 <tr>
+                    <th>Highest Bid</th>
+                    <td>{{ singleauction.current_price }}</td>
+                 </tr>
+                 <tr>
+                    <th>Product Category</th>
+                    <td><a href="/listauccat/{{ singleauction.product.product_category.id }}">{{ singleauction.product.product_category }}</a></td>
+                 </tr>
+                 <tr>
+                    <th>Product Description</th>
+                    <td>{{ singleauction.product.description }}</td>
+                 </tr>
+                 <tr>
+                    <th>Auction owner</th>
+                    <td>{{singleauction.product.seller }}</td>
+                 </tr>
+              </tbody>
+            </table>
+          </div>
+    {% endblock %}

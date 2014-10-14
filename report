@@ -1,0 +1,49 @@
+http://security.stackexchange.com/questions/8964/trying-to-make-a-django-based-site-use-https-only-not-sure-if-its-secure
+http://blog.startifact.com/posts/older/what-is-pythonic.html
+
+
+X:\Github\Dewas\Pythonidae>python -V
+Python 2.7.8
+
+X:\Github\Dewas\Pythonidae>pip install webtest django-webtest
+Downloading/unpacking webtest
+
+
+
+X:\Github\Dewas\Pythonidae>pip freeze
+Django==1.7
+MySQL-Connector-Python==1.2.2
+WebOb==1.4
+WebTest==2.0.16
+beautifulsoup4==4.3.2
+colorama==0.3.2
+django-webtest==1.7.7
+docutils==0.11
+mando==0.3.2
+mccabe==0.2.1
+radon==1.1.1
+six==1.8.0
+virtualenv==1.11.4
+waitress==0.8.9
+
+list the dependencies and thier versions:
+X:\Github\Dewas\Pythonidae>pip freeze
+
+Stored in requirements.txt file and to install these packages used for this project
+Run: to the new development enviroment of the project
+X:\Github\Dewas\Pythonidae>pip install -r requirements.txt
+
+
+TESTING
+X:\Github\Dewas\Pythonidae>manage.py test yaas.tests.AuctionModelTest
+
+
+# Static directory definition
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '/static/'),
+)
+
+# Data fixtures directory definition
+FIXTURES_DIRS = (
+    os.path.join(BASE_DIR, '/fixtures/'),
+)

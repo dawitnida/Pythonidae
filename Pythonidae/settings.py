@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.admindocs',
     'yaas',
 
 )
@@ -88,4 +89,19 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
-FIXTURES_DIRS = (os.path.join(BASE_DIR, '/fixtures/'))
+# Static directory definition
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, '/static/'),
+)
+
+# Data fixtures directory definition
+FIXTURES_DIRS = (
+    os.path.join(BASE_DIR, '/fixtures/'),
+)
+
+# Security
+# SESSION_COOKIE_SECURE = True
+# csfr Security
+# CSRF_COOKIE_SECURE = True
+# Clear session when the browser is closed
+SESSION_EXPIRE_AT_BROWSER_CLOSE=True

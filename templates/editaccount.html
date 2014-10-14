@@ -1,20 +1,20 @@
-    {% extends "base_yaas.html" %}
-    {% block title %} Login {% endblock %}
-    {% block basecontent_login %}
+   {% extends "base_yaas.html" %}
+    {% block title %} Edit Account {% endblock %}
+    {% block basecontent_editaccount %}
         {% if user.is_authenticated %}
-           <p>Welcome, {{ user.username }}. You are logged in.</p>
-        {% else %}
-             <div class ="login">
+            <div class ="login">
                  <form action="" method="post">
                     {% csrf_token %}
-                      <p>Welcome, pal. Please Login.</p>
+                      <p>Welcome, {{ user.username }}. Edit will be done!</p>
                     <label for="username"></label>
                     <input type="text" name="username" value="" placeholder="Username" id="username"> <br>
                     <label for="password"></label>
                     <input type="password" name="password" value="" placeholder="Password" id="password">  <br>
-                    <p class="submit"><input type="submit" value="Login" name="login"> </p>
+                    <p class="submit"><input type="submit" value="Update" name="edit"> </p>
                  </form>
              </div>
+        {% else %}
+            <p>Login required to edit your account.</p>
         {% endif %}
     {% endblock %}
 

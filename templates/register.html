@@ -1,18 +1,21 @@
     {% extends "base_yaas.html" %}
     {% block title %} Register {% endblock %}
     {% block basecontent_register %}
-
         <div class ="login">
-                <h4> Hello Auctionary! </h4>
-           {% if success %}
-                 <h3> Thank you for registration!</h3>
-                <a href="index.html"> Home page</a>
-           {% else %}
-               <form class="subject" action="" method="post" enctype="multipart/form-data">
+            {% if user.is_authenticated %}
+              <p>Welcome, {{ user.username }}. You can not register while logged in.</p>
+            {% else %}
+                <p>Welcome, new user. Please register. * Required</p>
+                <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form.as_p }}
+                    {{ form.username }}
+                    {{ form.password1 }}
+                    {{ form.password2 }}
+                    {{ form.first_name }}
+                    {{ form.last_name }}
+                    {{ form.email }}
                     <input type="submit" name="signup" value="Signup">
                 </form>
-           {% endif %}
+            {% endif %}
         </div>
     {% endblock %}

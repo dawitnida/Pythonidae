@@ -1,0 +1,31 @@
+    {% extends "base_yaas.html" %}
+    {% block title %} My Auctions {% endblock %}
+    {% block basecontent %}
+        <h2 class="sub-header">My Auctions!</h2>
+       <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <th>ID</th>
+                <th>Auction Title</th>
+                <th>Initial Price</th>
+                <th>Current Bid</th>
+                <th>Last Updated</th>
+                <th>Auction Ends On</th>
+                <th>Auction Status</th>
+              </thead>
+              <tbody>
+              {% for a in myauctions %}
+                    <tr>
+                      <td>{{ a.id }}</td>
+                      <td><a href="/aucdetail/{{ a.id }}">{{ a.title }}</a></td>
+                      <td>{{ a.product.initial_price }}</td>
+                      <td> {{ a.current_price }}</td>
+                      <td> {{ a.updated_time }}</td>
+                      <td>{{ a.end_time }}</td>
+                      <td>{{ a.status }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+    {% endblock %}

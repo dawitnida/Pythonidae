@@ -1,0 +1,29 @@
+    {% extends "base_yaas.html" %}
+    {% block title %} My Products {% endblock %}
+    {% block basecontent %}
+        <h2 class="sub-header">My Products!</h2>
+       <div class="table-responsive">
+            <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                  <th>Product Name</th>
+                  <th>Updated On</th>
+                  <th>Initial Price</th>
+                  <th>Product Category</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for a in myproducts %}
+                    <tr>
+                      <td>{{ a.id }}</td>
+                      <td><a href="#">{{ a.name }}</a></td>
+                      <td> {{ a.timestamp }}</td>
+                      <td> {{ a.initial_price }}</td>
+                      <td>{{ a.product_category }}</td>
+                    </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+    {% endblock %}

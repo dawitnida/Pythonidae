@@ -16,7 +16,7 @@
         "pk": 2,
         "fields": {
             "name": "50 Shades",
-            "seller": 12,
+            "seller": 1,
             "initial_price": 86.69,
             "description": "Amazing book",
             "timestamp": "2016-10-11 22:49:54",
