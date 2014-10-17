@@ -7,7 +7,7 @@
             "current_price": 123.4,
             "updated_time": "2015-10-11 23:49:54",
             "end_time": "2016-10-11 22:49:54",
-            "product": 1,
+            "product": 2,
             "status": 4
         }
     },
@@ -19,7 +19,7 @@
             "current_price": 54.09,
             "updated_time": "2014-10-16 09:49:54",
             "end_time": "2014-10-16 22:49:54",
-            "product": 2,
+            "product": 3,
             "status": 2
         }
     },
@@ -31,7 +31,7 @@
             "current_price": 6.0,
             "updated_time": "2014-12-11 13:49:54",
             "end_time": "2014-12-11 22:49:54",
-            "product": 3,
+            "product": 4,
             "status": 2
         }
     },
@@ -43,7 +43,7 @@
             "current_price": 23.53,
             "updated_time": "2014-11-01 22:49:54",
             "end_time": "2014-11-11 22:49:54",
-            "product": 4,
+            "product": 5,
             "status": 4
         }
     },
@@ -55,7 +55,7 @@
             "current_price": 3.5,
             "updated_time": "2013-10-11 22:49:54",
             "end_time": "2014-10-11 22:49:54",
-            "product": 7,
+            "product": 6,
             "status": 3
         }
     }

@@ -1,20 +1,17 @@
-   {% extends "base_yaas.html" %}
-    {% block title %} Edit Account {% endblock %}
+    {% extends "base/base_yaas.html" %}
+    {% block title %} Update User Profile {% endblock %}
     {% block basecontent_editaccount %}
-        {% if user.is_authenticated %}
-            <div class ="login">
+        <div class ="login">
+            {% if user.is_authenticated %}
+                <p>Welcome, {{ user.username }}. Please update your profile. All fields are required</p>
                  <form action="" method="post">
                     {% csrf_token %}
-                      <p>Welcome, {{ user.username }}. Edit will be done!</p>
-                    <label for="username"></label>
-                    <input type="text" name="username" value="" placeholder="Username" id="username"> <br>
-                    <label for="password"></label>
-                    <input type="password" name="password" value="" placeholder="Password" id="password">  <br>
-                    <p class="submit"><input type="submit" value="Update" name="edit"> </p>
+                    {{ form }}
+                    <p class="submit"><input type="submit" value="Save" name="save"> </p>
                  </form>
-             </div>
-        {% else %}
-            <p>Login required to edit your account.</p>
-        {% endif %}
+                {{ account }}
+            {% else %}
+                <p>Welcome, Pal. Not Authenticated user!.</p>
+            {% endif %}
+        </div>
     {% endblock %}
-

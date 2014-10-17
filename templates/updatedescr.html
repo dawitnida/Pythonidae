@@ -1,0 +1,12 @@
+    {% extends "base/base_yaas.html" %}
+    {% block title %} Update Auction Description {% endblock %}
+    {% block basecontent_updatedescription %}
+        <div class ="descrp">
+            <p>Welcome, {{ user.username }}. Please update Auction description.</p>
+             <form action="" method="post">
+                {% csrf_token %}
+                {{ form.description | escape }}
+                <p class="submit"><input type="submit" value="Update" name="update"> </p>
+             </form>
+        </div>
+    {% endblock %}

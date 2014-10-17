@@ -1,12 +1,13 @@
     {% extends "base/base_yaas.html" %}
-    {% block title %} Home {% endblock %}
-    {% block basecontent %}
-         <h2 class="sub-header">Auctios with the same Category</h2>
-         <div class="table-responsive">
+    {% block title %} Search results. {% endblock %}
+    {% block basecontent_searchresult %}
+       {% if display %}
+          <h2 class="sub-header">Search result Auctions!</h2>
+          <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <tr>
-                    <th>ID</th>
+                  <th>ID</th>
                   <th>Product Name</th>
                   <th>Auction Title</th>
                   <th>Updated On</th>
@@ -18,7 +19,7 @@
                 </tr>
               </thead>
               <tbody>
-                {% for a in auctcategory %}
+                {% for a in auc %}
                     <tr>
                       <td>{{ a.id }}</td>
                       <td><a href="#">{{ a.product }}</a></td>
@@ -27,13 +28,12 @@
                       <td> {{ a.end_time }}</td>
                       <td>{{ a.product.initial_price }}</td>
                       <td>{{ a.current_price }}</td>
-                      <td><a href="#">{{ a.product.product_category }}</a></td>
+                      <td><a href="/listauccat/{{ a.product.product_category.id }}">{{ a.product.product_category }}</a></td>
                       <td>{{ a.product.seller }}</td>
                     </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
+       {% endif %}
     {% endblock %}
-
-

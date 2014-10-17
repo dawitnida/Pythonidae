@@ -1,17 +1,19 @@
-    {% extends "base_yaas.html" %}
+    {% extends "base/base_yaas.html" %}
     {% block title %} My Auctions {% endblock %}
     {% block basecontent %}
+        {% if display %}
         <h2 class="sub-header">My Auctions!</h2>
        <div class="table-responsive">
             <table class="table table-striped">
               <thead>
                 <th>ID</th>
                 <th>Auction Title</th>
-                <th>Initial Price</th>
-                <th>Current Bid</th>
+                <th>Initial Price [€]</th>
+                <th>Current highest Bid [€]</th>
                 <th>Last Updated</th>
                 <th>Auction Ends On</th>
                 <th>Auction Status</th>
+                <th></th>
               </thead>
               <tbody>
               {% for a in myauctions %}
@@ -23,9 +25,13 @@
                       <td> {{ a.updated_time }}</td>
                       <td>{{ a.end_time }}</td>
                       <td>{{ a.status }}</td>
+                      <td><a href="/updatedescr/{{ a.product.id }}">update</a></td>
                     </tr>
                 {% endfor %}
               </tbody>
             </table>
           </div>
+        {% endif %}
     {% endblock %}
+
+

@@ -24,8 +24,10 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
+# For production
+# ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -37,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
+    'autofixture',
     'yaas',
 
 )
@@ -89,6 +92,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR,  'templates'),
 )
 
+
 # Static directory definition
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '/static/'),
@@ -100,8 +104,12 @@ FIXTURES_DIRS = (
 )
 
 # Security
-# SESSION_COOKIE_SECURE = True
+#SESSION_COOKIE_SECURE = True
+
 # csfr Security
 # CSRF_COOKIE_SECURE = True
 # Clear session when the browser is closed
 SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+
+# Session Expire in 3600 seconds and require re-login by the member user
+SESSION_COOKIE_AGE = 3600

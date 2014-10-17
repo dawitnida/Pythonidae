@@ -1,5 +1,6 @@
 http://security.stackexchange.com/questions/8964/trying-to-make-a-django-based-site-use-https-only-not-sure-if-its-secure
 http://blog.startifact.com/posts/older/what-is-pythonic.html
+http://nedbatchelder.com/code/coverage/
 
 
 X:\Github\Dewas\Pythonidae>python -V
@@ -38,6 +39,9 @@ TESTING
 X:\Github\Dewas\Pythonidae>manage.py test yaas.tests.AuctionModelTest
 
 
+SEARCHING
+X:\Github\Dewas\Pythonidae>pip install django-haystack
+
 # Static directory definition
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '/static/'),
@@ -47,3 +51,39 @@ STATICFILES_DIRS = (
 FIXTURES_DIRS = (
     os.path.join(BASE_DIR, '/fixtures/'),
 )
+
+
+
+{{ a.get_absolute_url }}
+
+
+X:\Github\Dewas\Pythonidae>coverage report
+Name                                      Stmts   Miss  Cover
+-------------------------------------------------------------
+Pythonidae\__init__                           0      0   100%
+Pythonidae\settings                          21      0   100%
+Pythonidae\urls                               6      0   100%
+Pythonidae\wsgi                               5      5     0%
+manage                                        6      0   100%
+templates\__init__                            3      3     0%
+yaas\__init__                                 0      0   100%
+yaas\admin                                   39      2    95%
+yaas\forms                                   27      4    85%
+yaas\migrations\0001_initial                  7      0   100%
+yaas\migrations\0002_auto_20141011_1408       7      0   100%
+yaas\migrations\0003_auto_20141011_1412       6      0   100%
+yaas\migrations\0004_auto_20141011_1600       6      0   100%
+yaas\migrations\0005_auto_20141012_0057       6      0   100%
+yaas\migrations\0006_auto_20141012_1236       6      0   100%
+yaas\migrations\0007_auto_20141013_1327       6      0   100%
+yaas\migrations\0008_auto_20141013_2135       6      0   100%
+yaas\migrations\0009_auto_20141013_2317       6      0   100%
+yaas\migrations\__init__                      0      0   100%
+yaas\models                                  95     37    61%
+yaas\static\__init__                          3      3     0%
+yaas\tests                                   86     18    79%
+yaas\views                                  130    103    21%
+-------------------------------------------------------------
+TOTAL                                       477    175    63%
+
+

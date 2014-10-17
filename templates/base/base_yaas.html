@@ -51,10 +51,11 @@
                 <li><a href="/register/">Register</a></li>
               </ul>
             {% endif %}
-
-          <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form>
+            <form class="navbar-form navbar-right" action="/search/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+               <input type="text" class="form-control" name="keytitle" placeholder="Search auction title...">
+               <input type="submit" name="search" value="Search">
+           </form>
         </div>
       </div>
     </div>
@@ -65,16 +66,23 @@
           <ul class="nav nav-sidebar">
               {% if user.is_authenticated %}
                 <li class="active"><a href="#">Overview</a></li>
-                <li><a href="/addauc/">Sell Item</a></li>
-                <li><a href="/listproduct">List My Products</a></li>
+                <li><a href="/addproduct/">Sell Item</a></li>
+                <li><a href="/listproduct">My Products</a></li>
               {% endif %}
           </ul>
+
             {% block basecontent_register %}
                 {% endblock %}
+
             {% block basecontent_login %}
                 {% endblock %}
+
             {% block basecontent_editaccount %}
                 {% endblock %}
+
+            {% block basecontent_bid %}
+                {% endblock %}
+
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <div class="page-header">
@@ -84,6 +92,7 @@
                    {% endif %}{{ message }}</p>
                 {% endfor %}
               {% endif %}
+
           </div>
 
           <div class="table-responsive">
@@ -91,8 +100,17 @@
               <tbody>
                 {% block basecontent %}
                 {% endblock %}
-              </tbody>
 
+                {% block basecontent_updatedescription %}
+                {% endblock %}
+
+                {% block basecontent_searchresult %}
+                {% endblock %}
+
+                {% block basecontent_bidders %}
+                {% endblock %}
+
+              </tbody>
             </table>
           </div>
         </div>
