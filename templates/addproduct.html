@@ -1,20 +1,17 @@
     {% extends "base/base_yaas.html" %}
-    {% block title %} Add Product {% endblock %}
-    {% block content_addauction %}
-    {% endblock %}
+    {% load i18n %}
 
-    {% block basecontent %}
+    {% block title %} Add Product {% endblock %}
+    {% block basecontent_addauction %}
         <h2 class="sub-header">Add Product!</h2>
        <div class="table-responsive">
             <table class="table table-striped">
               <tbody>
-                {% if user.is_authenticated %}
-                       <form action="" method="post" enctype="multipart/form-data">
-                            {% csrf_token %}
-                             {{ form.as_table }}
-                           <td></td><td><input type="submit" name="save" value="Add Product"></td>
-                       </form>
-                {% endif %}
+                   <form action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                         {{ form.as_table }}
+                       <td></td><td><input type="submit" name="save" value="Add Product"></td>
+                   </form>
               </tbody>
             </table>
           </div>

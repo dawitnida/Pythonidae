@@ -87,3 +87,23 @@ yaas\views                                  130    103    21%
 TOTAL                                       477    175    63%
 
 
+
+def validate_date_time(input_time):
+    t_format = '%Y-%m-%d %H:%M:%S'
+    end_time = datetime.strptime(input_time, t_format)
+    now_str = datetime.now().strftime(t_format)
+    now_dt = datetime.strptime(str(now_str), t_format)
+
+    time_delta = end_time - now_dt
+    sec = time_delta.total_seconds() - 259200.0
+
+    print 'difference',type(end_time), end_time
+    print 'type(sec)',  type(sec), sec
+    print 'type(time_delta)', type(time_delta), time_delta
+    print 'type(time_delta.total_seconds())',type(time_delta.total_seconds()), time_delta.total_seconds()
+    print 'type(time_delta.seconds)', type(time_delta.seconds), time_delta.seconds
+
+    if sec >= 0:
+        return time_delta
+    else:
+        return None

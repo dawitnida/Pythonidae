@@ -1,3 +1,4 @@
+{% load i18n %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +9,7 @@
     <meta name="DawitNida" content="">
     <link rel="icon" href="{{ STATIC_URL }}bootstrap/images/favicon.ico">
 
-    <title>YAAS</title>
+    <title>yaas</title>
 
     <!-- Bootstrap core CSS -->
     <link href= "{{ STATIC_URL }}bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,29 +34,41 @@
       <div class="container-fluid">
         <div class="navbar-header">
 
-          <a class="navbar-brand" href="/index/"> Yet Another Auction</a>
+          <a class="navbar-brand" href="/index/"> {% trans "Yet Another English Auction" %}</a>
         </div>
         <div class="navbar-collapse collapse">
-              {% if user.is_authenticated %}
-                  <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/index/">Home</a></li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="/index/">{% trans "Home" %}</a></li>{% if user.is_authenticated %}
                     <li><a href="/myauction/">My Auction</a></li>
                     <li><a href="#">My Bids</a></li>
                     <li><a href="/editaccount">{{ user.username }}</a></li>
-                    <li><a href="/logout/">Logout</a></li>
-                  </ul>
+                    <li><a href="/logout/">{% trans "Logout" %}</a></li>
                 {% else %}
-              <ul class="nav navbar-nav navbar-right">
-                <li><a href="/index/">Home</a></li>
-                <li><a href="/login/">Login</a></li>
-                <li><a href="/register/">Register</a></li>
-              </ul>
-            {% endif %}
-            <form class="navbar-form navbar-right" action="/search/" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-               <input type="text" class="form-control" name="keytitle" placeholder="Search auction title...">
-               <input type="submit" name="search" value="Search">
-           </form>
+                    <li><a href="/login/">{% trans "Login" %}</a></li>
+                    <li><a href="/register/">Register</a></li>
+                {% endif %}
+                </ul>
+      <!--
+                <form class="navbar-form navbar-right" action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ redirect_to }}" />
+                        <select name="language">
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                        <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected="selected"{% endif %}>
+                            {{ language.name_local }} ({{ language.code }})
+                        </option>
+                        {% endfor %}
+                        </select>
+                        <input type="submit" value="Go" />
+                </form>
+
+-->
+                <form class="navbar-form navbar-right" action="/search/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                   <input type="text" class="form-control" name="keytitle" placeholder="Search auction title...">
+                   <input type="submit" name="search" value="Search">
+               </form>
         </div>
       </div>
     </div>
@@ -64,10 +77,11 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
-              {% if user.is_authenticated %}
-                <li class="active"><a href="#">Overview</a></li>
                 <li><a href="/addproduct/">Sell Item</a></li>
-                <li><a href="/listproduct">My Products</a></li>
+              {% if user.is_authenticated %}
+                  <li><a href="/listproduct">My Products</a></li>
+                  <li><a href="/myauction/">My Auction</a></li>
+                  <li><a href="#">My Bids</a></li>
               {% endif %}
           </ul>
 
@@ -99,17 +113,19 @@
             <table class="table table-striped">
               <tbody>
                 {% block basecontent %}
-                {% endblock %}
+                    {% endblock %}
 
                 {% block basecontent_updatedescription %}
-                {% endblock %}
+                    {% endblock %}
 
                 {% block basecontent_searchresult %}
-                {% endblock %}
+                    {% endblock %}
 
                 {% block basecontent_bidders %}
-                {% endblock %}
+                    {% endblock %}
 
+                {% block basecontent_addauction %}
+                    {% endblock %}
               </tbody>
             </table>
           </div>

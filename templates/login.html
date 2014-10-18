@@ -1,4 +1,5 @@
     {% extends "base/base_yaas.html" %}
+    {% load i18n %}
     {% block title %} Login {% endblock %}
     {% block basecontent_login %}
         {% if user.is_authenticated %}
@@ -9,10 +10,10 @@
                     {% csrf_token %}
                       <p>Welcome, pal. Please Login.</p>
                     <label for="username"></label>
-                    <input type="text" name="username" value="" placeholder="Username" id="username"> <br>
+                    <input type="text" name="username" value="" id="username" placeholder={% trans "Username" %}> <br>
                     <label for="password"></label>
-                    <input type="password" name="password" value="" placeholder="Password" id="password">  <br>
-                    <p class="submit"><input type="submit" value="Login" name="login"> </p>
+                    <input type="password" name="password" value="" id="password" placeholder={% trans "Password" %}>  <br>
+                    <p class="submit"><input type="submit" name="login" value={% trans "Login" %}> </p>
                  </form>
              </div>
         {% endif %}
