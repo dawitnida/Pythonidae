@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_unicode
 from datetime import datetime
+from django.core.validators import MinValueValidator
 
 
 class ProductCategory(models.Model):
@@ -25,9 +26,9 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=20)
     seller = models.ForeignKey(User, verbose_name="seller")
-    initial_price = models.DecimalField(max_digits=10, decimal_places = 2, verbose_name="starting bid" )
+    initial_price = models.DecimalField(max_digits=10, decimal_places = 2, validators=[MinValueValidator(0)], verbose_name="starting bid" )
     description = models.TextField(max_length=280)
-    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False, default= datetime.now())
+    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
     product_category = models.ForeignKey(ProductCategory, verbose_name="product category")
 
     class Meta:
@@ -56,26 +57,25 @@ class AuctionStatus(models.Model):
 
 
 class Auction(models.Model):
-    """
-    Auction model:
-    """
     title = models.CharField(max_length=20)
-    current_price = models.DecimalField(max_digits=10, decimal_places = 2,
+    current_price = models.DecimalField(max_digits=10, decimal_places = 2, default=0,
                                         null=True, blank=True, verbose_name="current bid" )
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     updated_time = models.DateTimeField(auto_now_add=False,
-                                        auto_now=True, default= datetime.now())
-    end_time = models.DateTimeField()
+                                        auto_now=True, default= now)
+    end_time = models.DateTimeField(format('%Y-%m-%d %H:%M:%S'))
     product = models.OneToOneField(Product)
     status = models.ForeignKey(AuctionStatus, verbose_name="auction status")
 
     class Meta:
         unique_together = (("title"),)
+        ordering = ['end_time']
 
     def __unicode__(self):
         return smart_unicode(self.title)
 
     @classmethod
-    def fetchLatestAuctions(cls):
+    def fetchActiveAuctions(cls):
         try:
             queryset = cls.objects.filter(status_id = 1).order_by('-end_time').reverse()
             return queryset
@@ -102,7 +102,26 @@ class Auction(models.Model):
     def getAuctionByOwner(cls, ownerid):
         try:
             myprod = Product.objects.filter(seller_id = ownerid)
-            queryset = Auction.objects.filter(product_id = myprod)
+            queryset = Auction.objects.filter(product_id = myprod, status_id = 1)
+            return queryset
+        except IndexError:
+            return None
+
+    @classmethod
+    def getOwnerByAuctionID(cls, aucid):
+        try:
+            queryset = Auction.objects.get(id = aucid, status_id = 1)
+            myprod = Product.objects.get(id = queryset.product_id)
+            seller = myprod.seller
+
+            return seller
+        except IndexError:
+            return None
+
+    @classmethod
+    def getAuctionByProductID(cls, product_id):
+        try:
+            queryset = Auction.objects.get(product = product_id, status_id = 1)
             return queryset
         except IndexError:
             return None
@@ -110,21 +129,27 @@ class Auction(models.Model):
 
 class Bidder(models.Model):
     contender = models.ForeignKey(User, verbose_name="contender")
-    aucs = models.ManyToManyField(Auction, through='AuctionBidder')
+    auctions = models.ManyToManyField(Auction, through='AuctionBidder')
 
     def __unicode__(self):
         return smart_unicode(self.contender)
 
+    class Meta:
+        ordering = ["contender"]
+
 
 class AuctionBidder(models.Model):
-    contender = models.ForeignKey(Bidder)
-    aucs = models.ForeignKey(Auction)
+    unique_bidder = models.ForeignKey(Bidder)
+    auc = models.ForeignKey(Auction)
     bid_amount = models.DecimalField(max_digits=10, decimal_places = 2, verbose_name="bid amount" )
     bid_time = models.DateTimeField(auto_now_add=False,
                                         auto_now=True, default= datetime.now())
 
     def __unicode__(self):
-        return smart_unicode(self.aucs)
+        return smart_unicode(self.auc)
+
+    class Meta:
+        ordering = ["bid_time"]
 
     @classmethod
     def getAuction(cls, userid):
@@ -137,6 +162,7 @@ class AuctionBidder(models.Model):
     @classmethod
     def exists(cls, contender):
         return len(cls.objects.filter(contender = contender)) > 0
+
 
 
 

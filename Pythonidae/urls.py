@@ -41,6 +41,7 @@ urlpatterns = patterns('',
     url(r'^i18n/', include('django.conf.urls.i18n')),
 
 )
+
 urlpatterns += i18n_patterns('',
     url(r'^index/$', views.display_auctions, name = 'index'),
 
@@ -60,7 +61,7 @@ urlpatterns += i18n_patterns('',
     url(r'^updatedescr/(?P<offset>.*)/$', 'yaas.views.update_description', {}, name = 'updatedescr'),
 
     url(r'^addproduct/$', views.add_product, name ='addproduct'),
-    url(r'^auction/(?P<product_name>\w+)$', views.new_auction, name='newauction'),
+    url(r'^auction/(?P<product_name>\w+)$', views.confirm_new_auction, name='newauction'),
 
     url(r'^search/$', views.search_auction, name ='search'),
 

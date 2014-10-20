@@ -83,8 +83,11 @@ USE_L10N = False
 
 USE_TZ = True
 
-
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+#EMAIL_FILE_PATH = '/emails/yaas'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
