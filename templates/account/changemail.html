@@ -1,13 +1,14 @@
     {% extends "base/base_yaas.html" %}
     {% load i18n %}
     {% block title %} Update User Profile {% endblock %}
-    {% block basecontent_editaccount %}
+    {% block content_editaccount %}
         <div class ="login">
             {% if user.is_authenticated %}
-                <p>Welcome, {{ user.username }}. Please update your profile. All fields are required</p>
+                <p>Welcome, {{ user.username }}. Please update your email profile.</p>
                  <form action="" method="post">
                     {% csrf_token %}
-                    {{ form }}
+                     {{ form.email | linebreaks}}
+                     {{ form.confirm_email }}
                     <p class="submit"><input type="submit" value="Save" name="save"> </p>
                  </form>
                 {{ account }}

@@ -14,7 +14,7 @@
                  </tr>
                  <tr>
                     <th>{% trans "Product name" %}</th>
-                    <td><a href="#">{{ singleauction.product }}</a></td>
+                    <td>{{ singleauction.product }}</td>
                  </tr>
                  <tr>
                     <th>Auction Title</th>
@@ -53,7 +53,7 @@
           </div>
     {% endblock %}
 
-    {% block basecontent_bid %}
+    {% block content_bid %}
           <form class="login" action="/placebid/{{ singleauction.id }}/" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                <input type="text"  name="bid_amount" placeholder="Amount">
@@ -66,7 +66,7 @@
            </form>
     {% endblock %}
 
-    {% block basecontent_bidders %}
+    {% block content_bidders %}
          {% if display %}
              <h2 class="sub-header">Latest Bidding Details</h2>
              <div class="table-responsive">

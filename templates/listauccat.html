@@ -22,7 +22,7 @@
                 {% for a in auctcategory %}
                     <tr>
                       <td>{{ a.id }}</td>
-                      <td><a href="#">{{ a.product }}</a></td>
+                      <td>{{ a.product }}</td>
                       <td><a href="/aucdetail/{{ a.id }}">{{ a.title }}</a></td>
                       <td> {{ a.updated_time | date:"Y-m-d H:i:s"  }}</td>
                       <td> {{ a.end_time | date:"Y-m-d H:i:s" }}</td>

@@ -2,7 +2,7 @@
     {% load i18n %}
 
     {% block title %} Add Product {% endblock %}
-    {% block basecontent_addauction %}
+    {% block content_addauction %}
         <h2 class="sub-header">Add Product!</h2>
        <div class="table-responsive">
             <table class="table table-striped">
@@ -16,3 +16,13 @@
             </table>
           </div>
     {% endblock %}
+    {% if display %}
+    {% block content_confirmauction %}
+            <form class="" action="/saveauc/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                 <p class="submit"><input type="submit" value="Yes" name="yes_save">
+                <input type="submit" value="No" name="no_save"> </p>
+           </form>
+    {% endblock %}
+   {% endif %}
+

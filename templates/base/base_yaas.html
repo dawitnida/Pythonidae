@@ -38,10 +38,10 @@
         </div>
         <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="/index/">{% trans "Home" %}</a></li>{% if user.is_authenticated %}
-                    <li><a href="/myauction/">My Auction</a></li>
-                    <li><a href="#">My Bids</a></li>
-                    <li><a href="/editaccount">{{ user.username }}</a></li>
+                    <li><a href="/index/">{% trans "Home" %}</a></li>
+                {% if user.is_authenticated %}
+                    <li><a href="/changemail">Change Email</a></li>
+                    <li><a href="/editaccount">Edit {{ user.username }}</a></li>
                     <li><a href="/logout/">{% trans "Logout" %}</a></li>
                 {% else %}
                     <li><a href="/login/">{% trans "Login" %}</a></li>
@@ -85,17 +85,23 @@
               {% endif %}
           </ul>
 
-            {% block basecontent_register %}
+            {% block content_register %}
                 {% endblock %}
 
-            {% block basecontent_login %}
+            {% block content_login %}
                 {% endblock %}
 
-            {% block basecontent_editaccount %}
+            {% block content_editaccount %}
                 {% endblock %}
 
-            {% block basecontent_bid %}
+            {% block content_bid %}
                 {% endblock %}
+
+            {% block content_confirmauction %}
+                  {% endblock %}
+
+            {% block content_banauction %}
+                  {% endblock %}
 
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -115,17 +121,18 @@
                 {% block basecontent %}
                     {% endblock %}
 
-                {% block basecontent_updatedescription %}
+                {% block content_updatedescription %}
                     {% endblock %}
 
-                {% block basecontent_searchresult %}
+                {% block content_searchresult %}
                     {% endblock %}
 
-                {% block basecontent_bidders %}
+                {% block content_bidders %}
                     {% endblock %}
 
-                {% block basecontent_addauction %}
+                {% block content_addauction %}
                     {% endblock %}
+
               </tbody>
             </table>
           </div>

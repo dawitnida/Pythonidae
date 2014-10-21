@@ -2,7 +2,7 @@
     {% load i18n %}
     {% block title %} Home {% endblock %}
     {% block basecontent %}
-         <h2 class="sub-header">{% trans "Top 10 Auctions Ending sooner!" %}</h2>
+         <h2 class="sub-header">{% trans "Auctions " %}</h2>
          <div class="table-responsive">
             <table class="table table-striped">
               <thead>
@@ -22,7 +22,7 @@
                 {% for a in auctions %}
                     <tr>
                       <td>{{ a.id }}</td>
-                      <td><a href="#">{{ a.product }}</a></td>
+                      <td>{{ a.product }}</td>
                       <td><a href="/aucdetail/{{ a.id }}">{{ a.title }}</a></td>
                       <td> {{ a.updated_time | date:"Y-m-d H:i:s" }}</td>
                       <td> {{ a.end_time | date:"Y-m-d H:i:s" }}</td>
@@ -30,9 +30,18 @@
                       <td>{{ a.current_price }}</td>
                       <td><a href="/listauccat/{{ a.product.product_category.id }}">{{ a.product.product_category }}</a></td>
                       <td>{{ a.product.seller }}</td>
+                        {% if user.is_staff %}
+                            <td>{{ a.status }}</td>
+                            <td> <div class ="descrp">
+                                    <form action="/banauc/{{ a.id }}/" method="post">
+                                        {% csrf_token %}
+                                        <p class="submit"><input type="submit" value="Ban" name="ban"> </p>
+                                    </form>
+                                </div>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
-
               </tbody>
             </table>
           </div>

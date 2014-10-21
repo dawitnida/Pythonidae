@@ -88,7 +88,7 @@ TOTAL                                       477    175    63%
 
 
 
-def validate_date_time(input_time):
+def validateDateTime(input_time):
     t_format = '%Y-%m-%d %H:%M:%S'
     end_time = datetime.strptime(input_time, t_format)
     now_str = datetime.now().strftime(t_format)
@@ -107,3 +107,6 @@ def validate_date_time(input_time):
         return time_delta
     else:
         return None
+
+
+manage.py runcrons yaas.crontask.CronAuctionBan

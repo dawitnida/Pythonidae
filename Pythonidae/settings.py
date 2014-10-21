@@ -39,6 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
+    'django.contrib.formtools',   # For form wizard (confirmation of auction creation)
+    'django_cron',
     'autofixture',
     'yaas',
 
@@ -54,6 +56,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
+
 
 ROOT_URLCONF = 'Pythonidae.urls'
 
@@ -85,21 +88,18 @@ USE_TZ = True
 
 DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-#EMAIL_FILE_PATH = '/emails/yaas'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = BASE_DIR +  '/yaas/emails/messages/'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
-)
 
 LOCALE_PATHS = ('locale',)
-
 
 ugettext = lambda s: s
 LANGUAGES = (
@@ -108,6 +108,9 @@ LANGUAGES = (
     ('sv', ugettext('Svenska')),
 )
 
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR,  'templates'),
+)
 
 TEMPLATE_CONTEXT_PROCESSORS =(
     "django.contrib.auth.context_processors.auth",
@@ -118,6 +121,8 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages"
 )
+
+
 
 # Static directory definition
 STATICFILES_DIRS = (
@@ -139,3 +144,9 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
 # Session Expire in 3600 seconds and require re-login by the member user
 SESSION_COOKIE_AGE = 3600
+
+# crontabs for banning auction and handling bids on a schedule manner
+CRON_CLASSES = [
+    "yaas.crontask.CronAuctionBan",
+
+]

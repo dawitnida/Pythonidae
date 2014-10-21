@@ -16,7 +16,7 @@ urlpatterns = patterns('',
    # url(r'^index/$', TemplateView.as_view(template_name='index.html')
     #FIXME
     url(r'^$', views.home),
-    url(r'^index/$', views.display_auctions, name = 'index'),
+    url(r'^index/$', views.list_auction, name = 'index'),
 
     url(r'^login/$', views.user_login, name = 'login'),
     url(r'^register/$', views.register, name = 'register'),
@@ -25,12 +25,16 @@ urlpatterns = patterns('',
     url(r'^myauction/$', views.list_own_auction, name = 'myauction'),
     # rl(r'^myauction/(?P<offset>.*)/$', views.list_owned_auction, name='myauction'),
 
-    url(r'^listauccat/(?P<offset>.*)/$', 'yaas.views.list_auc_with_category', name = 'listauccat'),
-    url(r'^aucdetail/(?P<offset>.*)/$',  'yaas.views.auction_detail', name = 'aucdetail'),
-
+    url(r'^listauccat/(?P<offset>.*)/$', 'yaas.views.list_auc_category', name = 'listauccat'),
+    url(r'^aucdetail/(?P<id>[0-9]+)/$',  'yaas.views.auction_detail', name = 'aucdetail'),
+    url(r'^banauc/(?P<id>[0-9]+)/$', 'yaas.views.ban_auction', name = 'banauc'),
     url(r'^placebid/(?P<offset>.*)/$',  'yaas.views.bid_on_auction', name = 'placebid'),
 
-    url(r'^editaccount/$', views.edit_account, {}, name = 'editacc'),
+    url(r'^saveauc/$',  'yaas.views.save_auction', name = 'saveauc'),
+
+
+    url(r'^editaccount/$', views.change_password, {}, name = 'editacc'),
+    url(r'^changemail/$', views.change_email, {}, name = 'changemail'),
     url(r'^updatedescr/(?P<offset>.*)/$', 'yaas.views.update_description', {}, name = 'updatedescr'),
     url(r'^addproduct/$', views.add_product, name ='addproduct'),
     url(r'^search/$', views.search_auction, name ='search'),
@@ -43,7 +47,7 @@ urlpatterns = patterns('',
 )
 
 urlpatterns += i18n_patterns('',
-    url(r'^index/$', views.display_auctions, name = 'index'),
+    url(r'^index/$', views.list_auction, name = 'index'),
 
     url(r'^login/$', views.user_login, name = 'login'),
     url(r'^register/$', views.register, name = 'register'),
@@ -52,16 +56,18 @@ urlpatterns += i18n_patterns('',
     url(r'^myauction/$', views.list_own_auction, name = 'myauction'),
     # rl(r'^myauction/(?P<offset>.*)/$', views.list_owned_auction, name='myauction'),
 
-    url(r'^listauccat/(?P<offset>.*)/$', 'yaas.views.list_auc_with_category', name = 'listauccat'),
-    url(r'^aucdetail/(?P<offset>.*)/$',  'yaas.views.auction_detail', name = 'aucdetail'),
+    url(r'^listauccat/(?P<offset>.*)/$', 'yaas.views.list_auc_category', name = 'listauccat'),
+    url(r'^aucdetail/(?P<id>[0-9]+)/$',  'yaas.views.auction_detail', name = 'aucdetail'),
 
+    url(r'^banauc/(?P<id>[0-9]+)/$', 'yaas.views.ban_auction', name = 'banauc'),
     url(r'^placebid/(?P<offset>.*)/$',  'yaas.views.bid_on_auction', name = 'placebid'),
 
-    url(r'^editaccount/$', views.edit_account, {}, name = 'editacc'),
+    url(r'^editaccount/$', views.change_password, {}, name = 'editacc'),
+    url(r'^changemail/$', views.change_email, {}, name = 'changemail'),
     url(r'^updatedescr/(?P<offset>.*)/$', 'yaas.views.update_description', {}, name = 'updatedescr'),
 
     url(r'^addproduct/$', views.add_product, name ='addproduct'),
-    url(r'^auction/(?P<product_name>\w+)$', views.confirm_new_auction, name='newauction'),
+    url(r'^saveauc/$', 'yaas.views.save_auction', name = 'saveauc'),
 
     url(r'^search/$', views.search_auction, name ='search'),
 

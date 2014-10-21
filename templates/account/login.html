@@ -1,7 +1,7 @@
     {% extends "base/base_yaas.html" %}
     {% load i18n %}
     {% block title %} Login {% endblock %}
-    {% block basecontent_login %}
+    {% block content_login %}
         {% if user.is_authenticated %}
            <p>Welcome, {{ user.username }}. You are logged in.</p>
         {% else %}

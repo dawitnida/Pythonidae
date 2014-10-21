@@ -20,10 +20,10 @@
               {% for p in myproducts %}
                     <tr>
                       <td>{{ p.id }}</td>
-                      <td><a href="#">{{ p.name }}</a></td>
+                      <td>{{ p.name }}</td>
                       <td> {{ p.timestamp | date:"Y-m-d H:i:s" }}</td>
                       <td> {{ p.initial_price }}</td>
-                      <td>{{ p.product_category }}</td>
+                      <td><a href="/listauccat/{{ p.product_category.id }}">{{ p.product_category }}</a></td>
                       <td><a href="/updatedescr/{{ p.id }}">update</a></td>
                     </tr>
                 {% endfor %}
