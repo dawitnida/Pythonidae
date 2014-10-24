@@ -6,11 +6,13 @@ __author__ = "Dawit Nida (dawit.nida@abo.fi)"
 __date__ = "Date: 8.10.2014"
 __version__ = "Version: "
 
+from datetime import datetime
+
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from yaas.models import User, Product, AuctionBidder
 from django.utils.translation import ugettext as _
-from datetime import datetime
+
+from yaas.models import User, Product, AuctionBidder
 
 
 class RegistrationForm(UserCreationForm):
@@ -50,40 +52,36 @@ class RegistrationForm(UserCreationForm):
 class AuctionAddForm(forms.ModelForm):
     # CAT_LIST = ProductCategory.listProductCategory()
     name = forms.CharField(max_length=40, label='Product name',
-                           help_text="Please enter the product name.",
-                                widget=forms.TextInput(attrs={'placeholder': _('* Product name')}
-                                )
+                           widget=forms.TextInput(attrs={'placeholder': _('* Product name')}
+                           )
     )
     title = forms.CharField(max_length=40, label='Auction Title',
-                            help_text="Please enter the auction tile.",
-                                widget=forms.TextInput(
-                                    attrs={'placeholder': _('* Auction title')}
-                                )
+                            widget=forms.TextInput(
+                                attrs={'placeholder': _('* Auction title')}
+                            )
     )
-    initial_price = forms.DecimalField(required=True, max_digits=10, decimal_places = 2, label='Initial price',
-                                       help_text="Price should be greater than 0",
+    initial_price = forms.DecimalField(required=True, max_digits=10, decimal_places=2, label='Initial price',
                                        widget=forms.TextInput(
                                            attrs={'placeholder': _('* Initial price')}
                                        )
     )
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     end_time = forms.DateTimeField(required=True, label='End date',
-                                   help_text="Format '2014-11-30 03:00:45' and Minimum of 72 hours auction duration from %s" %now,
-                                       widget=forms.TextInput(
-                                           attrs={'placeholder': _('* End date and time')}
-                                       )
+                                   help_text="Minimum of 72 hours duration from now and Must be exactly this format '%s'" % now,
+                                   widget=forms.TextInput(
+                                       attrs={'placeholder': _("* End date and time")}
+                                   )
     )
     description = forms.CharField(max_length=400, label='Description',
-                                  help_text="i.e. 'New brand...Quadcore processor.'",
                                   widget=forms.Textarea(
-                                      attrs={'placeholder': _('* Write product description.')}
+                                      attrs={'placeholder': _('* Write product description')}
                                   )
     )
 
     class Meta:
         model = Product
         fields = ('name', 'title', 'initial_price', 'end_time', 'product_category', 'description')
-
+        readonly_fields = ('name', 'title', 'initial_price', 'end_time', 'product_category', 'description')
 
 
 class ProductUpdateForm(forms.Form):
@@ -98,22 +96,17 @@ class ProductUpdateForm(forms.Form):
         model = Product
         fields = ('description',)
 
+
 class EmailUpdateForm(forms.Form):
     email = forms.EmailField(widget=forms.EmailInput(
-                                      attrs={'placeholder': _('* Type Email.')}
-                                  ))
+        attrs={'placeholder': _('* Type Email.')}
+    ))
     confirm_email = forms.EmailField(widget=forms.EmailInput(
-                                      attrs={'placeholder': _('* Retype your Email.')}
-                                  ))
+        attrs={'placeholder': _('* Retype your Email.')}
+    ))
 
 
 class AuctionBidderForm(forms.ModelForm):
-
     class Meta:
         model = AuctionBidder
         fields = ('bid_amount',)
-
-
-class ConfirmAuctionForm(forms.Form):
-    CHOICES = [(x, x) for x in ("Yes", "No")]
-    option = forms.ChoiceField(choices=CHOICES)

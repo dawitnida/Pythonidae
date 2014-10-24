@@ -1,9 +1,29 @@
-    {% extends "base/base_yaas.html" %}
-    {% load i18n %}
-    {% block title %} Save Auction {% endblock %}
+{% extends "base/base_yaas.html" %}
+{% load i18n %}
+{% block title %} Save Auction {% endblock %}
 
-    {% block content_addauction %}
+{% block content_addauction %}
+    <h2 class="sub-header">Add Product</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+
+            {{ form_data }}
+
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% if display %}
+    {% block content_confirmauction %}
+        <form class="" action="{% url 'yaas.views.save_auction' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <p class="submit"><input type="submit" value="Yes" name="yes_save">
+                <input type="submit" value="No" name="no_save"></p>
+        </form>
     {% endblock %}
+{% endif %}
 
 
 

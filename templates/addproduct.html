@@ -1,28 +1,22 @@
-    {% extends "base/base_yaas.html" %}
-    {% load i18n %}
+{% extends "base/base_yaas.html" %}
+{% load i18n %}
 
-    {% block title %} Add Product {% endblock %}
-    {% block content_addauction %}
-        <h2 class="sub-header">Add Product!</h2>
-       <div class="table-responsive">
-            <table class="table table-striped">
-              <tbody>
-                   <form action="" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                         {{ form.as_table }}
-                       <td></td><td><input type="submit" name="save" value="Add Product"></td>
-                   </form>
-              </tbody>
-            </table>
-          </div>
-    {% endblock %}
-    {% if display %}
-    {% block content_confirmauction %}
-            <form class="" action="/saveauc/" method="post" enctype="multipart/form-data">
+{% block title %} Add Product {% endblock %}
+
+{% block content_addauction %}
+    <h2 class="sub-header">Add Product</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tbody>
+            <form action="{% url 'yaas.views.add_product' %}" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                 <p class="submit"><input type="submit" value="Yes" name="yes_save">
-                <input type="submit" value="No" name="no_save"> </p>
-           </form>
-    {% endblock %}
-   {% endif %}
+                {{ form.as_table }}
+                <td></td>
+                <td><input type="submit" name="save" value="Add Product"></td>
+            </form>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
 

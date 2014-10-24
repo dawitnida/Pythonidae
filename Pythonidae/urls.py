@@ -1,23 +1,24 @@
-from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.conf.urls import *
 from django.conf.urls.i18n import i18n_patterns
-from django.views.generic import TemplateView
+from rest_framework import routers
 
 from yaas import views
 
 
 admin.autodiscover()
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
+
 urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'Pythonidae.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
-   # url(r'^index/$', TemplateView.as_view(template_name='index.html')
-    #FIXME
+    url(r'^', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', views.home),
     url(r'^index/$', views.list_auction, name = 'index'),
-
     url(r'^login/$', views.user_login, name = 'login'),
     url(r'^register/$', views.register, name = 'register'),
     url(r'^logout/$', views.user_logout, {}, name = 'logout'),

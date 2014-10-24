@@ -1,34 +1,34 @@
-    {% extends "base/base_yaas.html" %}
-    {% load i18n %}
-    {% block title %} My Products {% endblock %}
-    {% block basecontent %}
-        {% if display %}
-        <h2 class="sub-header">My Products!</h2>
+{% extends "base/base_yaas.html" %}
+{% load i18n %}
+{% block title %} My Products {% endblock %}
+{% block basecontent %}
+    {% if display %}
+        <h2 class="sub-header">My Products</h2>
         <div class="table-responsive">
             <table class="table table-striped">
-            <thead>
+                <thead>
                 <tr>
                     <th>ID</th>
-                  <th>Product Name</th>
-                  <th>Inserted On</th>
-                  <th>Initial Price [€]</th>
-                  <th>Product Category</th>
-                  <th></th>
+                    <th>Product Name</th>
+                    <th>Inserted On</th>
+                    <th>Initial Price [€]</th>
+                    <th>Product Category</th>
+                    <th></th>
                 </tr>
-              </thead>
-              <tbody>
-              {% for p in myproducts %}
+                </thead>
+                <tbody>
+                {% for p in myproducts %}
                     <tr>
-                      <td>{{ p.id }}</td>
-                      <td>{{ p.name }}</td>
-                      <td> {{ p.timestamp | date:"Y-m-d H:i:s" }}</td>
-                      <td> {{ p.initial_price }}</td>
-                      <td><a href="/listauccat/{{ p.product_category.id }}">{{ p.product_category }}</a></td>
-                      <td><a href="/updatedescr/{{ p.id }}">update</a></td>
+                        <td>{{ p.id }}</td>
+                        <td>{{ p.name }}</td>
+                        <td> {{ p.timestamp | date:"Y-m-d H:i:s" }}</td>
+                        <td> {{ p.initial_price }}</td>
+                        <td><a href="/listauccat/{{ p.product_category.id }}">{{ p.product_category }}</a></td>
+                        <td><a href="/updatedescr/{{ p.id }}">update</a></td>
                     </tr>
                 {% endfor %}
-              </tbody>
+                </tbody>
             </table>
         </div>
-        {% endif %}
-    {% endblock %}
+    {% endif %}
+{% endblock %}

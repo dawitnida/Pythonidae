@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+import djcelery
+
+djcelery.setup_loader()
+BROKER_URL = 'django://'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -39,11 +43,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
-    'django.contrib.formtools',   # For form wizard (confirmation of auction creation)
+    'rest_framework',
     'django_cron',
+    'djcelery',
+    'kombu.transport.django',
     'autofixture',
     'yaas',
-
 )
 
 MIDDLEWARE_CLASSES = (
@@ -98,7 +103,6 @@ EMAIL_FILE_PATH = BASE_DIR +  '/yaas/emails/messages/'
 
 STATIC_URL = '/static/'
 
-
 LOCALE_PATHS = ('locale',)
 
 ugettext = lambda s: s
@@ -121,7 +125,6 @@ TEMPLATE_CONTEXT_PROCESSORS =(
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages"
 )
-
 
 
 # Static directory definition
@@ -147,6 +150,31 @@ SESSION_COOKIE_AGE = 3600
 
 # crontabs for banning auction and handling bids on a schedule manner
 CRON_CLASSES = [
-    "yaas.crontask.CronAuctionBan",
-
+    "yaas.crontask.ResolveAuction",
 ]
+
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend',
+
+CELERY_TASK_RESULT_EXPIRES = 1800
+
+'''
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+'''
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    'PAGINATE_BY': 10
+}
+
+ADMINS = (
+    ('Dawit Nida', 'dawit.nida@abo.fi'),
+    ('Yaas Admin', 'yaas@abo.fi'),
+)
+
+MANAGERS = ADMINS

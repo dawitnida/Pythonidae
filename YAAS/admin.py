@@ -1,7 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.models import User
+
 from yaas.models import Auction, AuctionStatus, Product
 from .models import ProductCategory, AuctionBidder, Bidder
+
 
 
 # Register your models here.
@@ -42,11 +43,12 @@ class AuctionBidderAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name','seller', 'timestamp','initial_price', 'description', 'product_category')
+    list_display = ('id', 'name', 'seller', 'timestamp', 'initial_price', 'description', 'product_category')
     search_fields = ['name']
 
     class Meta:
         model = Product
+
 
 class ProductCategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
