@@ -3,10 +3,10 @@
         "model": "auth.user",
         "pk": 1,
         "fields": {
-            "username": "mickod",
-            "password": "mick",
-            "email": "micko@doe.rs",
-            "first_name": "Micko",
+            "username": "natali",
+            "password": "na",
+            "email": "natali@doe.rs",
+            "first_name": "natali",
             "last_name": "Doers"
         }
     },
@@ -14,9 +14,9 @@
         "model": "auth.user",
         "pk": 2,
         "fields": {
-            "username": "norhat",
-            "password": "norh",
-            "email": "nor@hat.cat",
+            "username": "povin",
+            "password": "po",
+            "email": "povin@hat.cat",
             "first_name": "Nori",
             "last_name": "Hatti"
         }

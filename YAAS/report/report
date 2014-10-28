@@ -10,6 +10,8 @@ X:\Github\Dewas\Pythonidae>pip install webtest django-webtest
 Downloading/unpacking webtest
 
 
+python manage.py celery worker
+python manage.py celery beat
 
 X:\Github\Dewas\Pythonidae>pip freeze
 Django==1.7
@@ -129,12 +131,39 @@ celery worker --app=yaas.yaascelery:app
 
 celery -A yaas.yaascelery worker --loglevel=info
 
+wsgi.py
+#os.environ["CELERY_LOADER"] = "django"
+celery.py
+from __future__ import absolute_import
+""" Development of Web Applications and Web Services
 
+"""
+
+__author__ = "Dawit Nida (dawit.nida@abo.fi)"
+__date__ = "Date: 27.10.2014"
+__version__ = "Version: "
+
+import os
+from celery import Celery
+from django.conf import settings
+
+# set the default Django settings module for the 'celery' program.
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Pythonidae.settings')
+app = Celery('Pythonidae')
+# Using a string here means the worker will not have to
+# pickle the object when using Windows.
+app.config_from_object('django.conf:settings')
+app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+@app.task(bind=True)
+def debug_task(self):
+    print('Request: {0!r}'.format(self.request))
+setting.py
+import djcelery
+djcelery.setup_loader()
 
 
 manage.py runcrons yaas.crontask.CronAuctionBan
 manage.py runcrons yaas.crontask.ResolveAuction
-
 
 
 ood [ [{"fields": {"description": "dafds", "product_category": 2, "timestamp": null, "initial_price": "9", "seller": 12, "name": "trea"}, "model": "y

@@ -16,3 +16,4 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 os.environ['HTTPS'] = "on"
 
+os.environ["CELERY_LOADER"] = "django"

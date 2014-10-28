@@ -1,44 +1,33 @@
 """ Development of Web Applications and Web Services
 
 """
-from __future__ import absolute_import
 
 __author__ = "Dawit Nida (dawit.nida@abo.fi)"
-__date__ = "Date: 24.10.2014"
+__date__ = "Date: 20.10.2014"
 __version__ = "Version: "
 
-from yaas.yaascelery import app
-from yaas.models import Auction, AuctionBidder
-from django.utils import timezone
-from yaas.views import emailer, getBiddersEmail
+from celery.schedules import crontab
+from celery.task import periodic_task
+import django
+
+from yaas.management.commands.resolve import Command
+from yaas.crontask import ResolveAuction
+
+django.setup()
+
+# Amazingly done after lots of research.
+# This does the real resolving process with just calling the main
+# class that does the hard work from ResolveAuction class
+# This is pretty neat when it works with celery...
+# seems less work of 2 continues days to configure cron tab on django + WINDOWS machine yaaak! I miss Linux-
+# Run crontab job...will execute command every minute.
+@periodic_task(run_every=crontab(hour="*", minute="*", day_of_week="*"))
+def run_crontask():
+    auto = Command()
+    auto.handle_noargs()
 
 
-@app.task
-def sthng():
-    print 'I am running celery'
-
-
-@app.task
-def resolve_auction():
-    auctions = Auction.objects.filter(status_id=1)
-    if auctions:
-        for auc in auctions:
-            now = timezone.now()
-            if auc.end_time <= now:
-                any_bidder = AuctionBidder.objects.filter(auc=auc).count()
-                email_list = []
-                if any_bidder > 0:
-                    auc.status_id = 4
-                    email_list = getBiddersEmail(auc)
-                    print "Auction %s is Adjudicated!" % auc.title
-                else:
-                    auc.status_id = 3
-                    print "Auction %s is Due!" % auc.title
-
-                auc.save(update_fields=['status_id'])
-
-                email_list.append(auc.product.seller.email)
-                emailer(str(email_list), "resolve", auc.title)
-    else:
-        print "Nothing to resolve!"
-
+# Same work without django_cron for clarity and no custom management command
+def run_crontask_direct():
+    res = ResolveAuction()
+    res.do()

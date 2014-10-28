@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import smart_unicode
 from django.core.validators import MinValueValidator
+from django.utils import timezone
 
 
 class ProductCategory(models.Model):
@@ -20,11 +21,11 @@ class Product(models.Model):
     initial_price = models.DecimalField(max_digits=10, decimal_places=2,
                                         validators=[MinValueValidator(0)], verbose_name="starting bid")
     description = models.TextField(max_length=280)
-    timestamp = models.DateTimeField(auto_now_add=True, auto_now=False)
+    timestamp = models.DateTimeField(auto_now_add=timezone.now(), auto_now=False)
     product_category = models.ForeignKey(ProductCategory, verbose_name="product category")
 
     # class Meta:
-    #   unique_together = (("name"),)
+    # unique_together = (("name"),)
 
     def __unicode__(self):
         return smart_unicode(self.name)
@@ -45,7 +46,7 @@ class Auction(models.Model):
     current_price = models.DecimalField(max_digits=10, decimal_places=2, default=0,
                                         null=True, blank=True, verbose_name="current bid")
     # now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    updated_time = models.DateTimeField(auto_now_add=False, auto_now=True)
+    updated_time = models.DateTimeField(auto_now_add=False, auto_now=timezone.now())
     end_time = models.DateTimeField(verbose_name="end time")
     product = models.OneToOneField(Product)
     status = models.ForeignKey(AuctionStatus, verbose_name="auction status")
@@ -125,7 +126,7 @@ class AuctionBidder(models.Model):
     auc = models.ForeignKey(Auction)
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2,
                                      verbose_name="bid amount")
-    bid_time = models.DateTimeField(auto_now_add=False, auto_now=True, )
+    bid_time = models.DateTimeField(auto_now_add=False, auto_now=timezone.now(), )
 
     def __unicode__(self):
         return smart_unicode(self.auc)

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 """
 Django settings for Pythonidae project.
 
@@ -10,12 +12,14 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 import djcelery
 
 djcelery.setup_loader()
 BROKER_URL = 'django://'
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -62,7 +66,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-
 ROOT_URLCONF = 'Pythonidae.urls'
 
 WSGI_APPLICATION = 'Pythonidae.wsgi.application'
@@ -83,7 +86,7 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Helsinki'
 
 USE_I18N = True
 
@@ -91,11 +94,11 @@ USE_L10N = False
 
 USE_TZ = True
 
-DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
+# DATE_FORMAT = "%Y-%m-%d %H:%M:%S"
 
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = BASE_DIR +  '/yaas/emails/messages/'
+EMAIL_FILE_PATH = BASE_DIR + '/yaas/emails/messages/'
 
 
 # Static files (CSS, JavaScript, Images)
@@ -113,10 +116,10 @@ LANGUAGES = (
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
-TEMPLATE_CONTEXT_PROCESSORS =(
+TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
@@ -143,7 +146,7 @@ FIXTURES_DIRS = (
 # csfr Security
 # CSRF_COOKIE_SECURE = True
 # Clear session when the browser is closed
-SESSION_EXPIRE_AT_BROWSER_CLOSE=True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 # Session Expire in 3600 seconds and require re-login by the member user
 SESSION_COOKIE_AGE = 3600
@@ -153,9 +156,19 @@ CRON_CLASSES = [
     "yaas.crontask.ResolveAuction",
 ]
 
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend',
+'''
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'UTC'
+BROKER_URL = 'django://'
+CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 CELERY_TASK_RESULT_EXPIRES = 1800
+'''
+CELERY_IMPORTS = ("yaas.tasks",)
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 '''
 REST_FRAMEWORK = {
@@ -165,16 +178,26 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
-'''
+
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-    'PAGINATE_BY': 10
+   # 'PAGINATE_BY': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+    )
 }
-
+'''
 ADMINS = (
     ('Dawit Nida', 'dawit.nida@abo.fi'),
     ('Yaas Admin', 'yaas@abo.fi'),
 )
 
 MANAGERS = ADMINS
+
+'''
+import warnings
+warnings.filterwarnings(
+        'error', r"DateTimeField .* received a naive datetime",
+        RuntimeWarning, r'django\.db\.models\.fields')
+'''

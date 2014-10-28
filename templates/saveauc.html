@@ -7,9 +7,30 @@
     <div class="table-responsive">
         <table class="table table-striped">
             <tbody>
-
-            {{ form_data }}
-
+            <tr>
+                <th>{% trans "Product name" %}</th>
+                <td>{{ form_data.0 }}</td>
+            </tr>
+            <tr>
+                <th>Auction Title</th>
+                <td>{{ form_data.1 }}</td>
+            </tr>
+            <tr>
+                <th>Auction Ends</th>
+                <td>{{ form_data.4 }}</td>
+            </tr>
+            <tr>
+                <th>Initial Price [€]</th>
+                <td>{{ form_data.2 }}</td>
+            </tr>
+            <tr>
+                <th>Product category</th>
+                <td>{{ form_data.5 }}</td>
+            </tr>
+            <tr>
+                <th>Product Description</th>
+                <td>{{ form_data.3 }}</td>
+            </tr>
             </tbody>
         </table>
     </div>
