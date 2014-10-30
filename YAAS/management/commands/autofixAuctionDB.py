@@ -12,4 +12,4 @@ from django.core import management
 # TR1 DB fixture and data generation program: <50 Auctions>
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
-        management.call_command('loaddata', 'auctions.json', )
+        management.call_command('loaddata', 'products.json', 'auctions.json')

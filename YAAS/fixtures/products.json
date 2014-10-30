@@ -8,7 +8,7 @@
             "initial_price": 45.89,
             "description": "Cool t-shirt",
             "timestamp": "2014-10-11 22:49:54",
-            "product_category": 7
+            "product_category": 3
         }
     },
     {
@@ -28,23 +28,35 @@
         "pk": 3,
         "fields": {
             "name": "Windows 10",
-            "seller": 5,
+            "seller": 2,
             "initial_price": 323.8,
             "description": "Must own it!",
             "timestamp": "2015-10-30 03:00:54",
-            "product_category": 4
+            "product_category": 1
         }
     },
     {
         "model": "yaas.product",
         "pk": 4,
         "fields": {
-            "name": "Monaliza",
-            "seller": 6,
-            "initial_price": 6589,
+            "name": "pluto",
+            "seller": 2,
+            "initial_price": 56,
             "description": "Monalisa or Mona lisaa",
             "timestamp": "2014-02-11 11:49:54",
-            "product_category": 1
+            "product_category": 3
+        }
+    },
+    {
+        "model": "yaas.product",
+        "pk": 5,
+        "fields": {
+            "name": "Classless go",
+            "seller": 4,
+            "initial_price": 76,
+            "description": "true or Mona lisaa",
+            "timestamp": "2015-02-11 11:49:54",
+            "product_category": 4
         }
     }
 ]

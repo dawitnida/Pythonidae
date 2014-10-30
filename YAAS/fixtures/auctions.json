@@ -3,12 +3,12 @@
         "model": "yaas.auction",
         "pk": 1,
         "fields": {
-            "title": "Archi-CAD Software",
-            "current_price": 123.4,
+            "title": "Archi-CAD",
+            "current_price": 0,
             "updated_time": "2015-10-11 23:49:54",
             "end_time": "2016-10-11 22:49:54",
-            "product": 2,
-            "status": 4
+            "product": 1,
+            "status": 1
         }
     },
     {
@@ -16,22 +16,22 @@
         "pk": 2,
         "fields": {
             "title": "Lazy Shoe",
-            "current_price": 54.09,
+            "current_price": 0,
             "updated_time": "2014-10-16 09:49:54",
             "end_time": "2014-10-16 22:49:54",
-            "product": 3,
-            "status": 2
+            "product": 2,
+            "status": 1
         }
     },
     {
         "model": "yaas.auction",
         "pk": 3,
         "fields": {
-            "title": "Cloone",
-            "current_price": 6.0,
+            "title": "bongue",
+            "current_price": 0,
             "updated_time": "2014-12-11 13:49:54",
             "end_time": "2014-12-11 22:49:54",
-            "product": 4,
+            "product": 3,
             "status": 2
         }
     },
@@ -39,12 +39,12 @@
         "model": "yaas.auction",
         "pk": 4,
         "fields": {
-            "title": "Trojeans",
-            "current_price": 23.53,
+            "title": "F secure",
+            "current_price": 0,
             "updated_time": "2014-11-01 22:49:54",
             "end_time": "2014-11-11 22:49:54",
-            "product": 5,
-            "status": 4
+            "product": 4,
+            "status": 1
         }
     },
     {
@@ -52,12 +52,11 @@
         "pk": 5,
         "fields": {
             "title": "Lonely boy",
-            "current_price": 3.5,
+            "current_price": 0,
             "updated_time": "2013-10-11 22:49:54",
             "end_time": "2014-10-11 22:49:54",
-            "product": 6,
+            "product": 5,
             "status": 3
         }
     }
-
 ]

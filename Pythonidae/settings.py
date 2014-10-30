@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.admindocs',
     'rest_framework',
+    'rest_framework.authtoken',
     'django_cron',
     'djcelery',
     'kombu.transport.django',
@@ -106,6 +107,8 @@ EMAIL_FILE_PATH = BASE_DIR + '/yaas/emails/messages/'
 
 STATIC_URL = '/static/'
 
+# STATIC_ROOT = ('/static/')
+
 LOCALE_PATHS = ('locale',)
 
 ugettext = lambda s: s
@@ -134,6 +137,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '/static/'),
 )
+
 
 # Data fixtures directory definition
 FIXTURES_DIRS = (
@@ -170,24 +174,17 @@ CELERY_TASK_RESULT_EXPIRES = 1800
 CELERY_IMPORTS = ("yaas.tasks",)
 CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
-'''
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
-}
-
-
-REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
-   # 'PAGINATE_BY': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-    )
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # for web browsable API
+    ),
+    'PAGINATE_BY': 20,
+    #'DEFAULT_RENDERER_CLASSES': ('rest_framework.renderers.JSONRenderer'),
+    #'DEFAULT_PARSER_CLASSES': ('rest_framework.parsers.JSONResponse'),
+
 }
-'''
+
 ADMINS = (
     ('Dawit Nida', 'dawit.nida@abo.fi'),
     ('Yaas Admin', 'yaas@abo.fi'),

@@ -2,26 +2,20 @@ from django.contrib import admin
 from django.conf.urls import *
 from rest_framework import routers
 
+from yaas.api import ws_views
 from yaas.views import *
-from yaas import ws_views
 
 
 admin.autodiscover()
 
 router = routers.DefaultRouter()
-router.register(r'users', ws_views.UserViewSet)
-router.register(r'bids', ws_views.BidViewSet)
-router.register(r'aucs', ws_views.AuctionViewSet)
+router.register(r'userslist', ws_views.UserViewSet)
+router.register(r'auction', ws_views.AuctionViewSet)
+router.register(r'auctionbid/detail', ws_views.BidderViewSet)
 
 urlpatterns = patterns('',
                        # Examples:
                        # url(r'^$', 'Pythonidae.views.home', name='home'),
-                       # url(r'^blog/', include('blog.urls')),
-                       url(r'^api/', include(router.urls)),
-                       url(r'^api/auth/$', include('rest_framework.urls', namespace='rest_framework')),
-                       url(r'^api/auc/$', 'yaas.ws_views.apiauction_list'),
-
-                       url('^api/search/(?P<title>.+)/$', ws_views.SearchList.as_view()),
 
                        url(r'^$', home),
                        url(r'^index/$', list_auction, name='index'),
@@ -44,13 +38,20 @@ urlpatterns = patterns('',
                        url(r'^updatedescr/(?P<offset>.*)/$', 'yaas.views.update_description', {}, name='updatedescr'),
                        url(r'^addproduct/$', add_product, name='addproduct'),
                        url(r'^search/$', search_auction, name='search'),
+)
 
-                       url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-                       # Django Admin documentation generator
-
-                       url(r'^admin/', include(admin.site.urls)),
-                       url(r'^i18n/', include('django.conf.urls.i18n')),
-
+urlpatterns += patterns('',
+                        url(r'^api/', include(router.urls)),
+                        url(r'^api/auth/$', include('rest_framework.urls', namespace='rest_framework')),
+                        url(r'^api/auc/(?P<pk>[0-9]+)/$', 'yaas.api.ws_views.auction_detail'),
+                        url('^api/search/(?P<title>.+)/$', ws_views.SearchList.as_view()),
+                        url('^api/bid/(?P<pk>.+)/$', 'yaas.api.ws_views.bid_auction_detail'),
+                        url(r'^api/auth-user/', 'rest_framework.authtoken.views.obtain_auth_token'),
+                        url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                        url(r'^admin/', include(admin.site.urls)),  # Django Admin documentation generator
+                        url(r'^i18n/', include('django.conf.urls.i18n')),
+                        url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
+                        # Django Admin documentation generator
 )
 '''
 urlpatterns += i18n_patterns('',
