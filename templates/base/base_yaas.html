@@ -48,12 +48,29 @@
                     <li><a href="/login/">{% trans "Login" %}</a></li>
                     <li><a href="/register/">Register</a></li>
                 {% endif %}
+                <li>
+                    <form action="/switchlang/" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.path }}"/>
+                        <select name="language">
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            {% for language in languages %}
+                                <option value="{{ language.code }}"
+                                        {% if language.code == LANGUAGE_CODE %}
+                                        selected="selected"{% endif %}>
+                                    {{ language.name_local }} ({{ language.code }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <input type="submit" value="go"/>
+                    </form>
+                </li>
             </ul>
 
             <form class="navbar-form navbar-right" action="/search/" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <input type="text" class="form-control" name="keytitle" placeholder="Search auction title...">
-                <input type="submit" name="search" value="Search">
+                <input type="submit" name="search" value="{% trans "search" %}">
             </form>
         </div>
     </div>
@@ -63,11 +80,11 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li><a href="/addproduct/">Sell Item</a></li>
+                <li><a href="/addproduct/">{% trans "sell item" %}</a></li>
                 {% if user.is_authenticated %}
-                    <li><a href="/listproduct">My Products</a></li>
-                    <li><a href="/myauction/">My Auction</a></li>
-                    <li><a href="#">My Bids</a></li>
+                    <li><a href="/listproduct">{% trans "my products" %}</a></li>
+                    <li><a href="/myauction/">{% trans "my auction" %}</a></li>
+                    <li><a href="#">{% trans "my bids" %}</a></li>
                 {% endif %}
             </ul>
 
