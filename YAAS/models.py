@@ -24,9 +24,6 @@ class Product(models.Model):
     timestamp = models.DateTimeField(auto_now_add=timezone.now(), auto_now=False)
     product_category = models.ForeignKey(ProductCategory, verbose_name="product category")
 
-    # class Meta:
-    # unique_together = (("name"),)
-
     def __unicode__(self):
         return smart_unicode(self.name)
 
@@ -45,10 +42,9 @@ class Auction(models.Model):
     title = models.CharField(max_length=20)
     current_price = models.DecimalField(max_digits=10, decimal_places=2, default=0,
                                         null=True, blank=True, verbose_name="current bid")
-    # now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     updated_time = models.DateTimeField(auto_now_add=False, auto_now=timezone.now())
     end_time = models.DateTimeField(verbose_name="end time")
-    product = models.OneToOneField(Product)
+    product = models.OneToOneField(Product, related_name='product')
     status = models.ForeignKey(AuctionStatus, verbose_name="auction status")
 
     class Meta:
@@ -57,6 +53,7 @@ class Auction(models.Model):
 
     def __unicode__(self):
         return smart_unicode(self.title)
+
 
     @classmethod
     def fetchActiveAuctions(cls):
@@ -111,8 +108,8 @@ class Auction(models.Model):
 
 
 class Bidder(models.Model):
-    contender = models.ForeignKey(User, verbose_name="contender")
-    auctions = models.ManyToManyField(Auction, through='AuctionBidder')
+    contender = models.ForeignKey(User, related_name='buyer', verbose_name='contender')
+    auctions = models.ManyToManyField(Auction, related_name='auctions', through='AuctionBidder')
 
     def __unicode__(self):
         return smart_unicode(self.contender)
@@ -122,8 +119,8 @@ class Bidder(models.Model):
 
 
 class AuctionBidder(models.Model):
-    unique_bidder = models.ForeignKey(Bidder)
-    auc = models.ForeignKey(Auction)
+    unique_bidder = models.ForeignKey(Bidder, related_name='unique_bidder')
+    auc = models.ForeignKey(Auction, related_name='unique_auction')
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2,
                                      verbose_name="bid amount")
     bid_time = models.DateTimeField(auto_now_add=False, auto_now=timezone.now(), )

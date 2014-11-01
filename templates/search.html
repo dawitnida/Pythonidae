@@ -1,50 +1,53 @@
-    {% extends "base/base_yaas.html" %}
-    {% load i18n %}
-    {% block title %} Search results. {% endblock %}
-    {% block content_searchresult %}
-       {% if display %}
-          <h2 class="sub-header">Search result Auctions!</h2>
-          <div class="table-responsive">
+{% extends "base/base_yaas.html" %}
+{% load i18n %}
+{% block title %} Search results. {% endblock %}
+{% block content_searchresult %}
+    {% if display %}
+        <h2 class="sub-header">Search result Auctions</h2>
+        <div class="table-responsive">
             <table class="table table-striped">
-              <thead>
+                <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Product Name</th>
-                  <th>Auction Title</th>
-                  <th>Updated On</th>
-                  <th>Auction Ends</th>
-                  <th>Initial Price [€]</th>
-                  <th>Current highest Bid [€]</th>
-                  <th>Product Category</th>
-                  <th>Auction owner</th>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Auction Title</th>
+                    <th>Updated On</th>
+                    <th>Auction Ends</th>
+                    <th>Initial Price [€]</th>
+                    <th>Current highest Bid [€]</th>
+                    <th>Product Category</th>
+                    <th>Auction owner</th>
                 </tr>
-              </thead>
-              <tbody>
+                </thead>
+                <tbody>
                 {% for a in auc %}
                     <tr>
-                      <td>{{ a.id }}</td>
-                      <td>{{ a.product }}</td>
-                      <td><a href="/aucdetail/{{ a.id }}">{{ a.title }}</a></td>
-                      <td> {{ a.updated_time | date:"Y-m-d H:i:s" }}</td>
-                      <td> {{ a.end_time | date:"Y-m-d H:i:s"  }}</td>
-                      <td>{{ a.product.initial_price }}</td>
-                      <td>{{ a.current_price }}</td>
-                      <td><a href="/listauccat/{{ a.product.product_category.id }}">{{ a.product.product_category }}</a></td>
-                      <td>{{ a.product.seller }}</td>
+                        <td>{{ a.id }}</td>
+                        <td>{{ a.product }}</td>
+                        <td><a href="/aucdetail/{{ a.id }}">{{ a.title }}</a></td>
+                        <td> {{ a.updated_time | date:"Y-m-d H:i:s" }}</td>
+                        <td> {{ a.end_time | date:"Y-m-d H:i:s" }}</td>
+                        <td>{{ a.product.initial_price }}</td>
+                        <td>{{ a.current_price }}</td>
+                        <td>
+                            <a href="/listauccat/{{ a.product.product_category.id }}">{{ a.product.product_category }}</a>
+                        </td>
+                        <td>{{ a.product.seller }}</td>
                         {% if user.is_staff %}
                             <td>{{ a.status }}</td>
-                            <td> <div class ="descrp">
+                            <td>
+                                <div class="descrp">
                                     <form action="/banauc/{{ a.id }}/" method="post">
                                         {% csrf_token %}
-                                        <p class="submit"><input type="submit" value="Ban" name="ban"> </p>
+                                        <p class="submit"><input type="submit" value="Ban" name="ban"></p>
                                     </form>
                                 </div>
                             </td>
                         {% endif %}
                     </tr>
                 {% endfor %}
-              </tbody>
+                </tbody>
             </table>
-          </div>
-       {% endif %}
-    {% endblock %}
+        </div>
+    {% endif %}
+{% endblock %}

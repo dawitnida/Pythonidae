@@ -49,7 +49,6 @@ class RegistrationForm(UserCreationForm):
 
 
 class AuctionAddForm(forms.ModelForm):
-    # CAT_LIST = ProductCategory.listProductCategory()
     name = forms.CharField(max_length=40, label='Product name',
                            widget=forms.TextInput(attrs={'placeholder': '* Product name'}
                            )
@@ -66,7 +65,7 @@ class AuctionAddForm(forms.ModelForm):
     )
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     end_time = forms.DateTimeField(required=True, label='End date',
-                                   help_text="Minimum of 72 hours duration from now and Must be exactly this format '%s'" % now,
+                                   help_text="Minimum 72 hours duration from now & Must be exactly this format '%s'" % now,
                                    widget=forms.TextInput(
                                        attrs={'placeholder': "* End date and time"}
                                    )

@@ -200,3 +200,9 @@ def apiauction_list(request):
         else:
             return JSONResponse(serializer.errors, status=400)
 '''
+
+
+X:\Github\Dewas\Pythonidae>python manage.py dumpdata auth.user > yaas/fixtures/users.json
+X:\Github\Dewas\Pythonidae>python manage.py dumpdata yaas.auctionstatus > yaas/fixtures/aucstatus.json
+
+X:\Github\Dewas\Pythonidae>python manage.py dumpdata yaas.productcategory > yaas/fixtures/prodcat.json

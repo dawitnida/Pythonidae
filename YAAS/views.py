@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.views.generic.base import TemplateView
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import authenticate, login, logout
@@ -12,9 +14,11 @@ from django.core.mail import send_mail
 from django.contrib.auth.decorators import user_passes_test
 from django.utils import timezone
 from django.db.models import Max
+from django.utils.translation import ugettext as _
 
 from yaas.forms import *
 from yaas.models import Auction, Product, AuctionBidder, Bidder, ProductCategory
+from yaas.api.authentications import CreateUserToken
 
 
 # Class based view
@@ -32,9 +36,29 @@ class HomeView(TemplateView):
 
 home = HomeView.as_view()
 
+import string
+import random
 
+
+def fix_auction():
+    auc = Auction.objects.all()
+    pro = Product.objects.all()
+    WORD = []
+
+    def randomer(size=1, chars=string.ascii_lowercase):
+        return ''.join(random.choice(chars) for x in range(size))
+
+    for a in auc:
+        a.title = random.choice(WORD) + randomer()
+        # a.product.name = a.title
+        a.save()
+    print 'Done!'
+
+
+# login users
 def user_login(request):
     # Get the request context
+    # fix_auction()
     context_instance = RequestContext(request)
     if request.method == 'POST' and request.POST.get('login'):
         uname = request.POST.get('username', '')
@@ -59,6 +83,7 @@ def user_login(request):
                               context_instance)
 
 
+# New registration to yaas web application, username and email should be unique
 def register(request):
     # Get the request context
     context_instance = RequestContext(request)
@@ -79,6 +104,8 @@ def register(request):
                 if new_user is not None and new_user.is_active:
                     login(request, new_user)
                     messages.success(request, "Registration Successful, Enjoy Yaas!")
+                    token = CreateUserToken()  # This is for the Web service
+                    token.create_token()
                     return HttpResponseRedirect('/index/')
                 else:
                     messages.success(request, "Registration Successful, Login Again!")
@@ -100,8 +127,8 @@ def register(request):
                               context_instance)
 
 
+# Clearly fetch and display active auctions to any user of yaas
 def list_auction(request):
-    # Fetch all auctions and display to users
     context_instance = RequestContext(request)
     try:
         queryset = Auction.fetchActiveAuctions()
@@ -113,6 +140,7 @@ def list_auction(request):
         raise Http404
 
 
+# Displays the detailed description of a single auction
 def auction_detail(request, id):
     context_instance = RequestContext(request)
     success = None
@@ -136,11 +164,17 @@ def auction_detail(request, id):
         raise Http404
 
 
+# Bidding auction happens when a user follow the following rules,
+# User can not bid unless logged in, user can only bid on other items, not own
+# A user can not bid in a sequence, because he/she is winning anyways
+# Bidding amount must be at least 0.01+ than the initial price or highest bid
+# Soft deadline: is extending of the auction duration by 5 min, if any bid happens 5 min prior to auction deadline
+# Email is sent to owner and bidders, a single email is sent to bidders, even if they bid more than once
 @login_required(login_url='/login/')
 def bid_on_auction(request, offset):
     context_instance = RequestContext(request)
     try:
-        queryset_auction = Auction.getAuctionByID(offset)
+        query_auction = Auction.getAuctionByID(offset)
         seller = Auction.getOwnerByAuctionID(offset)
         placebid = AuctionBidderForm(request.POST)
         if request.user == seller:
@@ -148,51 +182,50 @@ def bid_on_auction(request, offset):
             return HttpResponseRedirect('/myauction/')
         else:
             if request.method == 'POST' and request.POST.get('placebid'):
-                if queryset_auction:
+                if query_auction:
                     if placebid.is_valid():
                         new_auc_bid = placebid.save(commit=False)
-                        initial_price = float(queryset_auction.product.initial_price)
-                        current_price = float(queryset_auction.current_price)
+                        initial_price = float(query_auction.product.initial_price)
+                        current_price = float(query_auction.current_price)
                         bid_amount = float(request.POST.get('bid_amount', ''))
-
                         # Amount should be greater than the initial price or the current highest bid by [0.01 min]
                         if (bid_amount > initial_price + 0.01) and (bid_amount > current_price + 0.01):
-                            new_auc_bid.auc = queryset_auction
-                            current_highest_price = queryset_auction.current_price
+                            new_auc_bid.auc = query_auction
+                            current_highest = query_auction.current_price
+                            email_list = []
                             try:
-                                any_bids = AuctionBidder.objects.filter(auc=queryset_auction)
-                                bidder = Bidder.objects.create(contender=request.user)
+                                bid_counter = AuctionBidder.objects.filter(auc=query_auction).count()
                                 # Check if any bidders found for this auction
-                                if any_bids.count() > 0:
-                                    last_bidder = AuctionBidder.objects.get(auc=new_auc_bid.auc,
-                                                                            bid_amount=current_highest_price)
+                                if bid_counter > 0:
+                                    last_bidder = AuctionBidder.objects.get(auc=query_auction,
+                                                                            bid_amount=current_highest)
                                     if str(request.user) == str(last_bidder.unique_bidder):
                                         messages.error(request, "You do not need to bid....you are winning anyways!")
                                         redirect_url = reverse('aucdetail', args=[new_auc_bid.auc.id])
                                         return HttpResponseRedirect(redirect_url)
-                                    elif str(request.user) != str(last_bidder.unique_bidder):
-                                        messages.success(request, "Thank you for Bidding!")
-                                        email_list = getBiddersEmail(queryset_auction)
-                                        # get emails as list which are bidding on the same
-                                        # auction and then append the seller email to the list
-                                        email = request.user.email
-                                        if email not in email_list:
-                                            email_list.append(email)
-                                        email_list.append(seller.email)
-                                        emailer(str(email_list), "mass", new_auc_bid.auc)
-                                else:
-                                    messages.success(request, "YES You are the first to bid!")
-                                    email_list = (request.user.email, seller.email)
-                                    emailer(str(email_list), "new", new_auc_bid.auc)
-
-                                new_auc_bid.auc = queryset_auction
+                                    if str(request.user) != str(last_bidder.unique_bidder):
+                                        email_list = getBiddersEmail(query_auction)
+                                bidder = Bidder.objects.create(contender=request.user)
+                                new_auc_bid.auc = query_auction
                                 new_auc_bid.bidder = bidder
                                 new_auc_bid.unique_bidder = bidder
 
-                                queryset_auction.current_price = bid_amount  # Update the highest bid amount
-                                queryset_auction.save(update_fields=['current_price'])
+                                query_auction.current_price = bid_amount  # Update the highest bid amount
+                                query_auction.save(update_fields=['current_price'])
                                 new_auc_bid = placebid.save()
+                                # get emails as list which are bidding on the same
+                                # auction and then append the seller email to the list
+                                email = request.user.email
+                                if email not in email_list:
+                                    email_list.append(email)
+                                email_list.append(seller.email)
+                                emailer(str(email_list), "mass", new_auc_bid.auc)
+                                messages.success(request, "Thank you for Bidding!")
 
+                                if soft_deadline(new_auc_bid.bid_time,
+                                                 query_auction.end_time):  # extend last 5 min of the auc
+                                    query_auction.end_time = query_auction.end_time + timedelta(0, 300)
+                                    query_auction.save(update_fields=['end_time'])
                                 redirect_url = reverse('aucdetail', args=[new_auc_bid.auc.id])
                                 return HttpResponseRedirect(redirect_url)
                             except AuctionBidder.DoesNotExist:
@@ -200,18 +233,18 @@ def bid_on_auction(request, offset):
                         else:
                             messages.error(request, "Bid amount should be at least +0.01 "
                                                     "of the initial price or highest bid amount!")
-                            redirect_url = reverse('aucdetail', args=[queryset_auction.id])
+                            redirect_url = reverse('aucdetail', args=[query_auction.id])
                             return HttpResponseRedirect(redirect_url)
                     else:
                         messages.error(request, "Invalid data. Please enter the correct amount!")
-                        redirect_url = reverse('aucdetail', args=[queryset_auction.id])
+                        redirect_url = reverse('aucdetail', args=[query_auction.id])
                         return HttpResponseRedirect(redirect_url)
                 else:
                     messages.info(request, 'No Auction found for bidding.')
             else:
                 placebid = AuctionBidderForm()
 
-        context = {'singleauction': queryset_auction, 'form': placebid}
+        context = {'singleauction': query_auction, 'form': placebid}
         return render_to_response("aucdetail.html",
                                   context,
                                   context_instance)
@@ -240,6 +273,7 @@ def list_own_auction(request):
                               context_instance)
 
 
+# List products owned by the logged in user, may be used when the system gets fat
 @login_required(login_url='/login/')
 def list_own_product(request):
     context_instance = RequestContext(request)
@@ -277,6 +311,9 @@ def list_auc_category(request, offset):
         raise Http404
 
 
+# User is obliged to fulfill rules of adding new item to the auction,
+# minimum of 72 hours & datetime format should be satisfied
+# and then the user will be redirected to confirmation template, data is saved on the session<_new_product>
 @login_required(login_url='/login/')
 def add_product(request):
     # Get the request context
@@ -299,8 +336,6 @@ def add_product(request):
             if str(title) != str(old_auc):
                 min_duration = validateDateTime(end_time)
                 if min_duration:
-                    success = True
-                    messages.success(request, "Product saved. Confirm to activate the auction.")
                     new_product = addauc_form.save(commit=False)
                     request.session["_new_product"] = request.POST
                     name = request.POST.get('name', '')
@@ -311,6 +346,8 @@ def add_product(request):
                     category_id = request.POST.get('product_category', '')
                     category = ProductCategory.objects.get(id=category_id)
                     product = (name, title, initial_price, description, end_time, category.name)
+                    success = True
+                    messages.success(request, "Product saved. Confirm to activate the auction.")
                     return render_to_response('saveauc.html', {'form_data': product, 'display': success},
                                               context_instance=RequestContext(request))
                 else:
@@ -321,7 +358,7 @@ def add_product(request):
                 messages.error(request, "Auction found with the same TITLE...please change it!")
                 return HttpResponseRedirect('/addproduct/')
         else:
-            messages.error(request, " Fill the Auction thoroughly! Incorrect data input/s found.")
+            messages.error(request, "Fill the Auction thoroughly! Incorrect data input/s found.")
             return HttpResponseRedirect('/addproduct/')
 
     else:
@@ -335,6 +372,11 @@ def add_product(request):
                               context_instance)
 
 
+# After the seller fills the form to add new item to the auction, he/she will be
+# redirected here. The confirmation is displayed as Yes/No option to the user
+# If Yes, the data/values will be retrieved from its unique session key<_new_product>
+# It will be added to the auction and message will be sent to the owner by email
+# If No or nothing happens on the browser, then the data will be flushed from the session
 @login_required(login_url='/login/')
 def save_auction(request):
     if "_new_product" in request.session:
@@ -353,6 +395,7 @@ def save_auction(request):
             del request.session['_new_product']
             emailer(request.user.email, "single", product['title'])
             messages.success(request, "Thank you for adding new product to the Auction!")
+            return HttpResponseRedirect('/index/')
         elif request.method == 'POST' and request.POST.get('no_save'):
             messages.success(request, "Auction is not created.")
         else:
@@ -430,6 +473,7 @@ def change_email(request):
                               context_instance)
 
 
+# Change user password
 @login_required(login_url='/login/')
 def change_password(request):
     context_instance = RequestContext(request)
@@ -456,6 +500,10 @@ def change_password(request):
                               context_instance)
 
 
+# Admin or staff can ban an active auction that does not comply with the terms
+# Change the status of the auction to ban,
+# This will automatically insure that, the auction will not be searchable & will not appear to users
+# Send notification to owner of the auction and bidders, if there exist
 @user_passes_test(lambda u: u.is_staff, login_url='/404/')
 def ban_auction(request, id):
     try:
@@ -484,7 +532,7 @@ def ban_auction(request, id):
         raise Http404
 
 
-# Search auctions, by title, and return list of auction/auctions with details
+# Search auctions, by title, or matching string & return list of auction/auctions with details
 # If no auction found, redirect user to the Referrer
 def search_auction(request):
     context_instance = RequestContext(request)
@@ -546,8 +594,16 @@ def validateDateTime(input_time):
         return None
 
 
+# If there is a bid in the last 5 minutes of the auction deadline,
+# extend the auction duration by 5 minutes more, so that others can place there bid
+def soft_deadline(bid_time, end_time):
+    sec = (end_time - bid_time).total_seconds()
+    if sec <= 300:
+        return True
+
+
 # Iteration is done on the bidders to find their unique emails, so that they
-#  must get only one email on every bid of the auction they are in! Or when
+# must get only one email on every bid of the auction they are in! Or when
 #  Admin bans an auction, bidders will get notification by email
 #  Returns their emails as a list.
 #  One bidder can bid as many as he/she wants on the same bid, as long as he/she is not the highest bidder
@@ -581,10 +637,6 @@ def emailer(recipient_list, email_type, title):
             subject = "New AUCTION"
             body = "Confirmation for creating '%s' Auction, more notified when bids happen!" % title
             send_mail(subject, body, from_email, [recipient_list, ], fail_silently=False)
-        elif email_type == 'new':
-            subject = "New BID"
-            body_bidder = "Auction title '%s' has the first bid." % title
-            send_mail(subject, body_bidder, from_email, [recipient_list, ], fail_silently=False)
         elif email_type == 'mass':
             subject = "Another New BID"
             body_bidder = "Auction title '%s' has new bid." % title

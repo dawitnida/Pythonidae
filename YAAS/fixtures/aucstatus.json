@@ -1,0 +1,32 @@
+[
+
+    {
+        "fields": {
+            "name": "Active"
+        },
+        "model": "yaas.auctionstatus",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Banned"
+        },
+        "model": "yaas.auctionstatus",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Due"
+        },
+        "model": "yaas.auctionstatus",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "name": "Adjudicated"
+        },
+        "model": "yaas.auctionstatus",
+        "pk": 4
+    }
+
+]
