@@ -1,0 +1,67 @@
+[
+
+    {
+        "fields": {
+            "name": "Art"
+        },
+        "model": "yaas.productcategory",
+        "pk": 1
+    },
+    {
+        "fields": {
+            "name": "Automobiles"
+        },
+        "model": "yaas.productcategory",
+        "pk": 2
+    },
+    {
+        "fields": {
+            "name": "Entertainment"
+        },
+        "model": "yaas.productcategory",
+        "pk": 3
+    },
+    {
+        "fields": {
+            "name": "Electronics"
+        },
+        "model": "yaas.productcategory",
+        "pk": 4
+    },
+    {
+        "fields": {
+            "name": "Machinary"
+        },
+        "model": "yaas.productcategory",
+        "pk": 5
+    },
+    {
+        "fields": {
+            "name": "Books"
+        },
+        "model": "yaas.productcategory",
+        "pk": 6
+    },
+    {
+        "fields": {
+            "name": "Fashion"
+        },
+        "model": "yaas.productcategory",
+        "pk": 7
+    },
+    {
+        "fields": {
+            "name": "Health"
+        },
+        "model": "yaas.productcategory",
+        "pk": 8
+    },
+    {
+        "fields": {
+            "name": "Collections"
+        },
+        "model": "yaas.productcategory",
+        "pk": 9
+    }
+
+]

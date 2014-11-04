@@ -6,7 +6,7 @@ from yaas.models import *
 # Models are registered here.
 class AuctionAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'product', 'auction_category',
-                    'starting_price', 'current_price', 'updated_time', 'end_time', 'status', )
+                    'starting_price', 'current_price', 'updated_time', 'end_time', 'status', 'version')
     search_fields = ['title']
 
     def starting_price(self, instance):
@@ -20,14 +20,14 @@ class AuctionAdmin(admin.ModelAdmin):
 
 
 class AuctionStatusAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('id', 'name', 'version')
 
     class Meta:
         model = AuctionStatus
 
 
 class BidderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'contender', )
+    list_display = ('id', 'contender', 'version')
     search_fields = ['contender__username']
 
     class Meta:
@@ -35,7 +35,7 @@ class BidderAdmin(admin.ModelAdmin):
 
 
 class AuctionBidderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'unique_bidder', 'auc', 'bid_amount', 'bid_time')
+    list_display = ('id', 'unique_bidder', 'auc', 'bid_amount', 'bid_time', 'version')
     search_fields = ['auc__title']
 
     class Meta:
@@ -43,7 +43,7 @@ class AuctionBidderAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'seller', 'timestamp', 'initial_price', 'description', 'product_category')
+    list_display = ('id', 'name', 'seller', 'timestamp', 'initial_price', 'description', 'product_category', 'version')
     search_fields = ['name']
 
     class Meta:

@@ -18,7 +18,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 import djcelery
 
 djcelery.setup_loader()
-BROKER_URL = 'django://'
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'rest_framework',
     'rest_framework.authtoken',
+    'concurrency',
     'django_cron',
     'djcelery',
     'kombu.transport.django',
@@ -142,14 +143,13 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, '/static/'),
 )
 
-
 # Data fixtures directory definition
 FIXTURES_DIRS = (
     os.path.join(BASE_DIR, '/fixtures/'),
 )
 
 # Security
-#SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 
 # csfr Security
 # CSRF_COOKIE_SECURE = True
@@ -159,24 +159,22 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # Session Expire in 3600 seconds and require re-login by the member user
 SESSION_COOKIE_AGE = 3600
 
-# crontabs for banning auction and handling bids on a schedule manner
+# crontabs for handling deadlines in auction on a schedule manner
 CRON_CLASSES = [
     "yaas.crontask.ResolveAuction",
 ]
 
-'''
-CELERY_ENABLE_UTC = True
-CELERY_TIMEZONE = 'UTC'
+
+# Celery settings
 BROKER_URL = 'django://'
-CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
+CELERY_IMPORTS = ("yaas.tasks",)
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+
+CELERY_TIMEZONE = 'Europe/Helsinki'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-
 CELERY_TASK_RESULT_EXPIRES = 1800
-'''
-CELERY_IMPORTS = ("yaas.tasks",)
-CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -193,7 +191,6 @@ ADMINS = (
     ('Dawit Nida', 'dawit.nida@abo.fi'),
     ('Yaas Admin', 'yaas@abo.fi'),
 )
-
 MANAGERS = ADMINS
 
 '''

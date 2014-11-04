@@ -6,7 +6,7 @@ __author__ = "Dawit Nida (dawit.nida@abo.fi)"
 __date__ = "Date: 24.10.2014"
 __version__ = "Version: "
 
-from django.http import Http404
+from django.http import HttpResponse
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import generics
 from rest_framework import viewsets, permissions
@@ -14,9 +14,17 @@ from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication, TokenAuthentication
+from rest_framework.renderers import JSONRenderer
 
 from yaas.api.serializers import *
 from yaas.models import *
+
+
+class JSONResponse(HttpResponse):
+    def __init__(self, data, **kwargs):
+        content = JSONRenderer().render(data)
+        kwargs['content_type'] = 'application/json'
+        super(JSONResponse, self).__init__(content, **kwargs)
 
 
 '''
@@ -38,7 +46,7 @@ class SearchList(generics.ListAPIView):
             queryset = self.model.objects.filter(title__icontains=title).filter(status_id=1)
             if queryset is not None:
                 return queryset.order_by('end_time')
-        raise Http404
+        return JSONResponse({"detail": "Auction not found."}, status=status.HTTP_404_NOT_FOUND)
 
 
 '''
@@ -66,37 +74,40 @@ def bid_auction_detail(request, pk):
             seller = Auction.getOwnerByAuctionID(pk)
             bids = AuctionBidder.objects.filter(auc=auc)
         except Auction.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            return JSONResponse({"non_auction_error": "Auction is not found."}, status=status.HTTP_404_NOT_FOUND)
         if request.method == 'GET':
             serializer = AuctionBidderModelSerializer(auc, many=False)
-            return Response(serializer.data)
+            return JSONResponse(serializer.data)
         elif request.method == 'POST':
             user = User.objects.get(username=content['user'])
             bidder = Bidder.objects.create(contender=user)
             data = {'unique_bidder': bidder.pk, 'auc': auc.pk,
                     'bid_amount': request.DATA.get('bid_amount'), 'bid_time': timezone.now()}
+
             if user.pk == seller.pk:
-                return Response("You can not bid on your item.", status=status.HTTP_400_BAD_REQUEST)
+                return JSONResponse({"same_user_error": "You can not bid on your item."},
+                                    status=status.HTTP_400_BAD_REQUEST)
             if bids.count() > 0:
                 last_bidder = AuctionBidder.objects.get(auc=auc, bid_amount=auc.current_price)
                 if str(user.username) == str(last_bidder.unique_bidder):
-                    return Response("No need to bid. You are winning.", status=status.HTTP_400_BAD_REQUEST)
+                    return JSONResponse({"duplicate_bidder_error": "No need to bid. You are winning."},
+                                        status=status.HTTP_400_BAD_REQUEST)
             else:
                 serializer = AuctionBidderSerializer(data=data)
                 if serializer.is_valid():
                     auc.bidder = bidder
                     auc.unique_bidder = bidder
                     serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                    return JSONResponse(serializer.data, status=status.HTTP_201_CREATED)
+                return JSONResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         elif request.method == 'DELETE':  # Remove bids and bidders from that specific auction and
             auc.current_price = 0  # Update the current highest price and may be in the future delete the auction itself
             auc.save(update_fields=['current_price'])
             bids.delete()
             # auc.delete() Remove the auction itself, and related product should be removed too!
             # Lets check. It needs query the related product and delete it
-            return Response(status=status.HTTP_204_NO_CONTENT)
-    return Response(content)
+            return JSONResponse({"non_auction_error": "Auction is deleted"}, status=status.HTTP_204_NO_CONTENT)
+    return JSONResponse(content)
 
 
 # Another class based view:
@@ -123,7 +134,7 @@ class BidderViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = (permissions.IsAdminUser,)
 
 
-# Auction API: Only available without any authenentication
+# Auction API: Only available without any authentications
 # Users can only view detail of an auction. nothing else
 @api_view(['GET'])
 def auction_detail(request, pk):
@@ -159,5 +170,5 @@ def auction_detail(request, pk):
         serializer = AuctionBidderModelSerializer(bid, data=request.DATA)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return JSONResponse(serializer.data)
+        return JSONResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

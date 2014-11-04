@@ -3,8 +3,13 @@ from django.contrib.auth import get_user_model
 from django.test.client import Client
 from django.core.urlresolvers import reverse
 
-from .forms import AuctionAddForm
-from .models import *
+from yaas.models import *
+
+
+'''
+TR2 Automated Functional Tests
+UC3 Create a new auction
+'''
 
 
 def create_status(name):
@@ -33,6 +38,13 @@ class AuthenticateUserTest(TestCase):
         self.assertEqual(self.user.username, 'catman')
         self.client.login(username='catman', password='cat')
         self.assertTrue(self.user.is_authenticated())
+
+
+# Simple Test case for Auction Status entry
+class AuctionStatusModelTest(TestCase):
+    def test_unicode_representation(self):
+        aucstatus = AuctionStatus(name="Active")
+        self.assertEqual(unicode(aucstatus), aucstatus.name)
 
 
 class AuctionCreateTest(TestCase):
@@ -76,22 +88,28 @@ class AuctionCreateTest(TestCase):
         self.failUnlessEqual(save_response.status_code, 200)
         self.assertRedirects(yes_save_response, '/index/')
 
-        # Test if <no_save> is chosed from the option & redirect to 'myauction'
+        # Assert if <no_save> is chosed from the option & redirect to 'myauction'
         no_save_response = self.client.post(save_url, {'no_save': True})
         self.failUnlessEqual(response.status_code, 200)
         self.assertRedirects(no_save_response, '/myauction/')
 
-        # Test Product and Auction are created
+        # Assert Product and Auction are created
         self.assertEqual(Product.objects.count(), 1)
         self.assertEqual(Auction.objects.count(), 1)
 
 
-# TODO
+'''
+TR2 Automated Functional Tests
+UC6 Bid
+'''
+
+
 class BidTest(TestCase):
     fixtures = ['users.json', 'aucstatus.json', 'prodcat.json', 'products.json', 'auctions.json']
 
     def setUp(self):
         self.client = Client()
+        self.user = User.objects.create_user('robert', 'catman@test.com', 'ro')
         self.auc = Auction.objects.get(id=1)
 
     def test_bid_amount(self):
@@ -138,17 +156,89 @@ class BidTest(TestCase):
         self.assertEqual(Bidder.objects.count(), 1)
 
 
-#TODO
-class ConcurrencyTest(TestCase):
-    def test_concurrency(self):
-        pass
+from concurrency.utils import ConcurrencyTestMixin
+from concurrency.views import RecordModifiedError
+
+'''
+TR2 Automated Functional Tests
+UC10 Support Multiple Concurrent Session
+This assert that simultaneous task on the same auction will raise exception
+So YAAS application should handle this exception <django-concurrency>
+solves this problem by creating IntegerField  for each model
+Version Field that returns a 'unique' version number for the record.
+The version number is produced using
+time.time() * 1000000, to get the benefits of microsecond if the system clock provides them.
+'''
 
 
-# Simple Test case for Auction Status entry
-class AuctionStatusModelTest(TestCase):
-    def test_unicode_representation(self):
-        aucstatus = AuctionStatus(name="Active")
-        self.assertEqual(unicode(aucstatus), aucstatus.name)
+class AuctionConcurrencyTest(ConcurrencyTestMixin, TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.now = timezone.now()
+        self.user_buyer = get_user_model().objects.create(username='jango')
+        self.user_seller = get_user_model().objects.create(username='omano')
+        self.category = ProductCategory.objects.create(name="Books")
+        self.status = AuctionStatus.objects.create(name="Active")
+        self.product = create_product('imacer', self.user_seller,
+                                      90, 'Amazing mobile', self.now, self.category)
+
+        self.auction = Auction.objects.create(title="macab", current_price=100,
+                                              updated_time=self.now, end_time="2014-11-11 04:49:54",
+                                              product=self.product, status=self.status)
+
+    def test_auction_concurrency(self):
+        concurrency_model = Auction
+        self.auc_a = Auction.objects.get(pk=1)
+        self.auc_b = Auction.objects.get(pk=1)
+        self.assertEqual(self.auc_a, self.auc_b)
+
+        self.auc_a.current_price = 12
+        self.auc_b.current_price = 12
+
+        self.auc_a.save()
+        with self.assertRaisesMessage(RecordModifiedError, "Record has been modified"):
+            self.auc_b.save()
+        version_1 = self.auc_a.version
+        self.auc_a.save()
+        version_2 = self.auc_a.save()
+        self.assertNotEqual(version_1, version_2)
+
+
+class BidConcurrencyTest(ConcurrencyTestMixin, TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.now = timezone.now()
+        self.user_buyer = get_user_model().objects.create(username='jango')
+        self.user_seller = get_user_model().objects.create(username='omano')
+        self.category = ProductCategory.objects.create(name="Books")
+        self.status = AuctionStatus.objects.create(name="Active")
+        self.product = create_product('imacer', self.user_seller,
+                                      90, 'Amazing mobile', self.now, self.category)
+        self.auction = Auction.objects.create(title="macab", current_price=100,
+                                              updated_time=self.now, end_time="2014-11-11 04:49:54",
+                                              product=self.product, status=self.status)
+
+    # Assert concurrency is met: by just creating basic versioned model
+    def test_bid_concurrency(self):
+        concurrency_model = AuctionBidder
+        self.auct = Auction.objects.get(pk=1)
+        self.auct.product.description = "I am on editing"
+        self.auct.current_price = 120
+        raised = False
+        try:
+            self.auct.save()
+            self.bidder = Bidder.objects.create(contender=self.user_buyer)
+            aucbid = AuctionBidder.objects.create(auc=self.auct, bid_time="2014-11-11 22:49:54",
+                                                  bid_amount=121, unique_bidder=self.bidder)
+            self.assertEqual(self.auct, aucbid.auc)
+        except:
+            raised = True
+        self.assertFalse(raised, 'Exception raised')
+
+
+'''
+More Automated Functional Tests
+'''
 
 
 class HomepageTest(TestCase):
@@ -161,8 +251,8 @@ class HomepageTest(TestCase):
         self.product = create_product('Nokia Lumia 404', self.user,
                                       90, 'Amazing mobile', self.now, self.category)
 
-        self.auction = Auction.objects.create(title="Archi-CAD Software", current_price=35.5,
-                                              updated_time=self.now, end_time="2014-10-11 22:49:54",
+        self.auction = Auction.objects.create(title="Archi-CAD Software", current_price=95.5,
+                                              updated_time=self.now, end_time="2014-11-11 22:49:54",
                                               product=self.product, status=self.status)
 
     def test_index_page(self):
@@ -178,15 +268,6 @@ class HomepageTest(TestCase):
         self.assertContains(response, 'Automobiles')
 
 
-    def test_valid_data(self):
-        form = AuctionAddForm({'name': self.product.name,
-                               'title': self.auction.title,
-                               'initial_price': self.product.initial_price,
-                               'end_time': self.auction.end_time,
-                               'product_category': self.product.product_category_id,
-                               'description': self.product.description
-                              }, self.product.seller, self.auction)
-        self.assertTrue(form.is_valid())
 
 
 

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.encoding import smart_unicode
 from django.core.validators import MinValueValidator
 from django.utils import timezone
+from concurrency.fields import IntegerVersionField
 
 
 class ProductCategory(models.Model):
@@ -23,6 +24,7 @@ class Product(models.Model):
     description = models.TextField(max_length=280)
     timestamp = models.DateTimeField(auto_now_add=timezone.now(), auto_now=False)
     product_category = models.ForeignKey(ProductCategory, verbose_name="product category")
+    version = IntegerVersionField()
 
     def __unicode__(self):
         return smart_unicode(self.name)
@@ -30,6 +32,7 @@ class Product(models.Model):
 
 class AuctionStatus(models.Model):
     name = models.CharField(max_length=20)
+    version = IntegerVersionField()
 
     class Meta:
         unique_together = (("name"),)
@@ -46,6 +49,7 @@ class Auction(models.Model):
     end_time = models.DateTimeField(verbose_name="end time")
     product = models.OneToOneField(Product, related_name='product')
     status = models.ForeignKey(AuctionStatus, verbose_name="auction status")
+    version = IntegerVersionField()
 
     class Meta:
         unique_together = (("title"),)
@@ -110,6 +114,7 @@ class Auction(models.Model):
 class Bidder(models.Model):
     contender = models.ForeignKey(User, related_name='buyer', verbose_name='contender')
     auctions = models.ManyToManyField(Auction, related_name='auctions', through='AuctionBidder')
+    version = IntegerVersionField()
 
     def __unicode__(self):
         return smart_unicode(self.contender)
@@ -124,6 +129,7 @@ class AuctionBidder(models.Model):
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2,
                                      verbose_name="bid amount")
     bid_time = models.DateTimeField(auto_now_add=False, auto_now=timezone.now(), )
+    version = IntegerVersionField()
 
     def __unicode__(self):
         return smart_unicode(self.auc)

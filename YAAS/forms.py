@@ -8,6 +8,7 @@ __version__ = "Version: "
 
 from datetime import datetime
 
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
@@ -49,7 +50,7 @@ class RegistrationForm(UserCreationForm):
 
 
 class AuctionAddForm(forms.ModelForm):
-    name = forms.CharField(max_length=40, label='Product name',
+    name = forms.CharField(max_length=40, label=_('Product name'),
                            widget=forms.TextInput(attrs={'placeholder': '* Product name'}
                            )
     )

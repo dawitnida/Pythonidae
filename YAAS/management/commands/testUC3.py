@@ -9,7 +9,7 @@ __version__ = "Version: "
 from django.core.management.base import NoArgsCommand
 from django.core import management
 
-# TR1 DB fixture and data generation program: <50 Auctions>
+# TR2.1 automated test for UC3
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
-        management.call_command('loaddata', 'users.json', 'products.json', 'auctions.json', 'bids.json')
+        management.call_command('test', 'yaas.tests.AuctionCreateTest')

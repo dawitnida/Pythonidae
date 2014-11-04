@@ -27,7 +27,7 @@ class AuctionBidderSerializer(serializers.ModelSerializer):
             auc.save(update_fields=['current_price'])
             return attrs
         else:
-            raise serializers.ValidationError("Invalid Bid amount.")
+            raise serializers.ValidationError({"bid_amount_error": "Invalid bid amount."})
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
