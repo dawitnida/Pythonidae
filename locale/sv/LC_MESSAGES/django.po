@@ -1,0 +1,129 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-11-01 14:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\Pythonidae\settings.py:119
+msgid "English"
+msgstr ""
+
+#: .\Pythonidae\settings.py:120
+msgid "Suomi"
+msgstr ""
+
+#: .\Pythonidae\settings.py:121
+msgid "Svenska"
+msgstr ""
+
+#: .\templates\account\login.html:13
+msgid "Username"
+msgstr "Användarnamn"
+
+#: .\templates\account\login.html:15
+msgid "Password"
+msgstr "Lösenord"
+
+#: .\templates\account\login.html:16 .\templates\base\base_yaas.html:48
+msgid "Login"
+msgstr "logga in"
+
+#: .\templates\aucdetail.html:16 .\templates\saveauc.html:11
+#: .\yaas\forms.py:52
+msgid "Product name"
+msgstr ""
+
+#: .\templates\base\base_yaas.html:38
+msgid "Yet Another English Auction"
+msgstr "Ännu en Svensk Auktion"
+
+#: .\templates\base\base_yaas.html:42
+msgid "Home"
+msgstr "Hem"
+
+#: .\templates\base\base_yaas.html:46
+msgid "Logout"
+msgstr "logga ut"
+
+#: .\templates\base\base_yaas.html:70
+msgid "search"
+msgstr "sök"
+
+#: .\templates\base\base_yaas.html:80
+msgid "sell item"
+msgstr "sälja produkt"
+
+#: .\templates\base\base_yaas.html:82
+msgid "my products"
+msgstr "min produkter"
+
+#: .\templates\base\base_yaas.html:83
+msgid "my auction"
+msgstr "min auktions"
+
+#: .\templates\base\base_yaas.html:84
+msgid "my bids"
+msgstr "min bud"
+
+#: .\templates\index.html:5
+msgid "Auctions "
+msgstr "auktions"
+
+#: .\yaas\views.py:109
+#, python-format
+msgid "Happy Auctionarying Staff! %s"
+msgstr ""
+
+#: .\yaas\views.py:111
+#, python-format
+msgid "Happy Auctionarying! %s"
+msgstr ""
+
+#: .\yaas\views.py:114
+msgid "Invalid username or  password."
+msgstr ""
+
+#: .\yaas\views.py:219
+msgid "You can not bid on your item."
+msgstr ""
+
+#: .\yaas\views.py:526
+msgid "Your password is updated and notified via email."
+msgstr ""
+
+#: .\yaas\views.py:600
+msgid "You are logged out. Welcome to login again!"
+msgstr ""
+
+#~ msgid "Top 10 Auctions Ending sooner!"
+#~ msgstr "Topp 10 Auktioner som slutar förr"
+
+#~ msgid "First name"
+#~ msgstr "Förnamn"
+
+#~ msgid "Last name"
+#~ msgstr "Efternamn"
+
+#~ msgid "* Email"
+#~ msgstr "* e-postadress"
+
+#~ msgid "* Username"
+#~ msgstr "* Användarnamn"
+
+#, fuzzy
+#~| msgid "* Email"
+#~ msgid "* Type Email."
+#~ msgstr "* e-postadress"

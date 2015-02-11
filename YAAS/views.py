@@ -87,7 +87,7 @@ def register(request):
         reg_form = RegistrationForm()
     context = {'form': reg_form}
     context.update(csrf(request))
-    return render_to_response('account/register.html',
+    return render_to_response('account/../../../ETMovieDB/etmdb/templates/account/register.html',
                               context,
                               context_instance)
 
