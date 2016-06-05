@@ -1,6 +1,4 @@
-Django==1.7
 Markdown==2.5.1
-MySQL-Connector-Python==1.2.2
 South==1.0
 WebOb==1.4
 WebTest==2.0.16
