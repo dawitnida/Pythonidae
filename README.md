@@ -1,3 +1,7 @@
+[![Requirements Status](https://requires.io/github/dawitnida/Pythonidae/requirements.svg?branch=master)](https://requires.io/github/dawitnida/Pythonidae/requirements/?branch=master) ![PyPI - Django Version](https://img.shields.io/pypi/djversions/djangorestframework.svg?style=plastic) 
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)
+
+
 # Pythonidae
 Development of Web Applications and Web
 Services
