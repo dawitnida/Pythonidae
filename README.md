@@ -30,4 +30,5 @@ The YAAS web application implements an web-based auction site described in the f
  UC9 Support for multiple languages
  UC10 Support Multiple Concurrent Sessions
 
-Dawit Nida
+## Author
+[Dawit Nida](https://github.com/dawitnida)
