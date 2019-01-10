@@ -2,8 +2,7 @@
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)
 
 # Pythonidae
-Development of Web Applications and Web
-Services
+Development of Web Applications and Web Services
 
 This document describes the project work for the course Development of Web Applications and Web Services.
 The objective of this project is to develop a Web application and Web service as described below. If you have any
@@ -11,8 +10,8 @@ questions about the interpretation of this document please contact me.
 
 YAAS is a web application and a web service to create and participate in auctions. In case you did not know, 
 auctioning all kinds of items over the Internet is a rather popular activity between us earthlings.
-Examples of popular auction sites include ebay.com and huuto.net. An auction site is a good example of
-a service oered as a web application. The organization owning an auction site does not buy or sell anything.
+Examples of popular auction sites include [ebay](ebay.com) and [huuto](huuto.net). An auction site is a good example of
+a service order as a web application. The organization owning an auction site does not buy or sell anything.
 Instead, it creates a community of users interested in buying or selling the most diverse items and provides
 its members with the tools to communicate and interact in a convenient, fast and easy way. 
 
