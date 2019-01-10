@@ -1,7 +1,6 @@
 [![Requirements Status](https://requires.io/github/dawitnida/Pythonidae/requirements.svg?branch=master)](https://requires.io/github/dawitnida/Pythonidae/requirements/?branch=master) ![PyPI - Django Version](https://img.shields.io/pypi/djversions/djangorestframework.svg?style=plastic) 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/Django.svg)
 
-
 # Pythonidae
 Development of Web Applications and Web
 Services
@@ -19,16 +18,16 @@ its members with the tools to communicate and interact in a convenient, fast and
 
 The YAAS web application implements an web-based auction site described in the following use cases below:
 
- UC1 Create an user account
- UC2 Edit user account information
- UC3 Create a new auction
- UC4 Edit and existing auction
- UC5 Browse and search auctions
- UC6 Bid
- UC7 Ban an auction
- UC8 Resolve an auction
- UC9 Support for multiple languages
- UC10 Support Multiple Concurrent Sessions
+- UC1 Create an user account
+- UC2 Edit user account information
+- UC3 Create a new auction
+- UC4 Edit and existing auction
+- UC5 Browse and search auctions
+- UC6 Bid
+- UC7 Ban an auction
+- UC8 Resolve an auction
+- UC9 Support for multiple languages
+- UC10 Support Multiple Concurrent Sessions
 
 ## Author
 [Dawit Nida](https://github.com/dawitnida)
