@@ -17,7 +17,7 @@ django-concurrency==0.8.1
 django-cron==0.3.4
 django-filter==0.8
 django-webtest==1.7.7
-djangorestframework==3.8.2
+djangorestframework>=3.9.1
 docutils==0.11
 kombu==3.0.23
 mando==0.3.2
@@ -26,4 +26,4 @@ pytz==2014.7
 radon==1.1.1
 six==1.8.0
 virtualenv==1.11.4
-waitress==0.8.9
+waitress>=1.4.2
