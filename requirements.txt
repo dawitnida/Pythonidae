@@ -1,6 +1,6 @@
 Markdown==2.5.1
 South==1.0
-WebOb==1.4
+WebOb==1.8.8
 WebTest==2.0.16
 amqp==1.4.6
 anyjson==0.3.3
