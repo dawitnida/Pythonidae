@@ -7,7 +7,7 @@ anyjson==0.3.3
 beautifulsoup4==4.3.2
 billiard==3.3.0.18
 celery==5.2.2
-certifi==14.05.14
+certifi==2025.4.26
 colorama==0.3.2
 coverage==3.7.1
 django-autofixture==0.9.1
