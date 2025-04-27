@@ -20,7 +20,7 @@ django-webtest==1.7.7
 djangorestframework>=3.9.1
 docutils==0.11
 kombu==3.0.23
-mando==0.3.2
+mando==0.8.2
 mccabe==0.2.1
 pytz==2014.7
 radon==1.1.1
