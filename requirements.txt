@@ -12,7 +12,7 @@ colorama==0.3.2
 coverage==3.7.1
 django-autofixture==0.9.1
 django-celery==3.1.16
-django-common-helpers==0.6.2
+django-common-helpers==0.9.2
 django-concurrency==2.7
 django-cron==0.3.4
 django-filter==2.4.0
