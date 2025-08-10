@@ -23,7 +23,7 @@ kombu==3.0.23
 mando==0.8.2
 mccabe==0.2.1
 pytz==2014.7
-radon==1.1.1
+radon==1.5.0
 six==1.8.0
 virtualenv==1.11.4
 waitress>=1.4.2
