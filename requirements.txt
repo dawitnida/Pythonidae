@@ -24,6 +24,6 @@ mando==0.8.2
 mccabe==0.2.1
 pytz==2014.7
 radon==1.1.1
-six==1.8.0
+six==1.17.0
 virtualenv==20.26.6
 waitress>=1.4.2
