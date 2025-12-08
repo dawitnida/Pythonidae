@@ -9,7 +9,7 @@ billiard==4.2.1
 celery==5.2.2
 certifi==2024.7.4
 colorama==0.3.2
-coverage==3.7.1
+coverage==7.13.0
 django-autofixture==0.9.1
 django-celery==3.1.16
 django-common-helpers==0.6.2
